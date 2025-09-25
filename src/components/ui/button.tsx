@@ -9,19 +9,19 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-primary text-primary-foreground shadow-glow-primary hover:scale-105 transition-all duration-300",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-border bg-card text-card-foreground shadow-neomorph hover:bg-card-elevated transition-all duration-300",
-        secondary: "bg-secondary text-secondary-foreground shadow-neomorph hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-gradient-primary text-primary-foreground transition-all duration-300",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "border border-border bg-card text-card-foreground",
+        secondary: "bg-secondary text-secondary-foreground",
+        ghost: "bg-transparent",
+        link: "text-primary underline-offset-4",
         
         // Forehand specific variants
-        hero: "bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-accent hover:scale-105 transition-all duration-300 font-semibold text-lg py-6 px-8",
-        sport: "bg-gradient-card text-card-foreground shadow-neomorph hover:shadow-glow-primary hover:scale-105 transition-all duration-300 aspect-square",
-        floating: "bg-gradient-primary text-primary-foreground shadow-glow-primary hover:shadow-glow-accent rounded-full fixed bottom-6 right-6 w-14 h-14 z-50",
-        accent: "bg-gradient-accent text-accent-foreground shadow-glow-accent hover:scale-105 transition-all duration-300",
-        neomorph: "bg-card text-card-foreground shadow-neomorph hover:shadow-neomorph-inset active:shadow-neomorph-inset transition-all duration-200",
+        hero: "bg-gradient-primary text-primary-foreground font-semibold text-lg py-6 px-8",
+        sport: "bg-gradient-card text-card-foreground aspect-square",
+        floating: "bg-gradient-primary text-primary-foreground rounded-full fixed bottom-6 right-6 w-14 h-14 z-50",
+        accent: "bg-gradient-accent text-accent-foreground",
+        neomorph: "bg-card text-card-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",

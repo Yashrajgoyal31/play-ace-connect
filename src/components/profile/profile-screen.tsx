@@ -3,13 +3,16 @@ import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SportIcon } from "@/components/ui/sport-icon";
-import { ArrowLeft, Share, Edit, Trophy, Target, Zap } from "lucide-react";
+import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon } from "lucide-react";
+import { useState } from "react";
 
 interface ProfileScreenProps {
   onBack: () => void;
 }
 
 export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  
   return (
     <MobileContainer className="pb-20">
       {/* Header */}
@@ -20,15 +23,24 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
         
         <h1 className="text-lg font-semibold">Profile</h1>
         
-        <Button variant="ghost" size="icon">
-          <Share className="w-5 h-5" />
-        </Button>
+        <div className="flex space-x-2">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+          >
+            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </Button>
+          <Button variant="ghost" size="icon">
+            <Share className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
 
       {/* Profile Header */}
       <div className="px-6 py-6">
-        <Card className="p-6 bg-gradient-card shadow-neomorph text-center">
-          <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-4 flex items-center justify-center shadow-glow-primary">
+        <Card className="p-6 bg-gradient-card text-center">
+          <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-4 flex items-center justify-center">
             <span className="text-3xl font-bold text-primary-foreground">A</span>
           </div>
           
@@ -36,9 +48,6 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
           <p className="text-muted-foreground mb-4">@alice_athlete</p>
           
           <div className="flex items-center justify-center space-x-4 mb-4">
-            <Badge variant="outline" className="bg-gradient-accent text-accent-foreground border-none">
-              Pro Player
-            </Badge>
             <Badge variant="outline" className="bg-success/20 text-success border-none">
               Active
             </Badge>
@@ -55,19 +64,19 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Performance Stats</h3>
         <div className="grid grid-cols-3 gap-4">
-          <Card className="p-4 text-center bg-gradient-card shadow-neomorph">
+          <Card className="p-4 text-center bg-gradient-card">
             <Trophy className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold">47</p>
             <p className="text-xs text-muted-foreground">Matches Won</p>
           </Card>
           
-          <Card className="p-4 text-center bg-gradient-card shadow-neomorph">
+          <Card className="p-4 text-center bg-gradient-card">
             <Target className="w-6 h-6 text-accent mx-auto mb-2" />
             <p className="text-2xl font-bold">73%</p>
             <p className="text-xs text-muted-foreground">Win Rate</p>
           </Card>
           
-          <Card className="p-4 text-center bg-gradient-card shadow-neomorph">
+          <Card className="p-4 text-center bg-gradient-card">
             <Zap className="w-6 h-6 text-warning mx-auto mb-2" />
             <p className="text-2xl font-bold">1,247</p>
             <p className="text-xs text-muted-foreground">Total Points</p>
@@ -79,48 +88,33 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Your Sports</h3>
         <div className="space-y-3">
-          <Card className="p-4 bg-gradient-card shadow-neomorph">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <SportIcon sport="badminton" size="md" />
-                <div>
-                  <p className="font-medium">Badminton</p>
-                  <p className="text-xs text-muted-foreground">Primary Sport • 28 matches</p>
-                </div>
+          <Card className="p-4 bg-gradient-card">
+            <div className="flex items-center space-x-3">
+              <SportIcon sport="badminton" size="md" />
+              <div>
+                <p className="font-medium">Badminton</p>
+                <p className="text-xs text-muted-foreground">Primary Sport • 28 matches</p>
               </div>
-              <Badge variant="outline" className="bg-primary/20 text-primary border-none text-xs">
-                Expert
-              </Badge>
             </div>
           </Card>
           
-          <Card className="p-4 bg-gradient-card shadow-neomorph">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <SportIcon sport="tennis" size="md" />
-                <div>
-                  <p className="font-medium">Tennis</p>
-                  <p className="text-xs text-muted-foreground">Secondary • 15 matches</p>
-                </div>
+          <Card className="p-4 bg-gradient-card">
+            <div className="flex items-center space-x-3">
+              <SportIcon sport="tennis" size="md" />
+              <div>
+                <p className="font-medium">Tennis</p>
+                <p className="text-xs text-muted-foreground">Secondary • 15 matches</p>
               </div>
-              <Badge variant="outline" className="bg-accent/20 text-accent border-none text-xs">
-                Advanced
-              </Badge>
             </div>
           </Card>
           
-          <Card className="p-4 bg-gradient-card shadow-neomorph">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <SportIcon sport="basketball" size="md" />
-                <div>
-                  <p className="font-medium">Basketball</p>
-                  <p className="text-xs text-muted-foreground">Casual • 4 matches</p>
-                </div>
+          <Card className="p-4 bg-gradient-card">
+            <div className="flex items-center space-x-3">
+              <SportIcon sport="basketball" size="md" />
+              <div>
+                <p className="font-medium">Basketball</p>
+                <p className="text-xs text-muted-foreground">Casual • 4 matches</p>
               </div>
-              <Badge variant="outline" className="bg-warning/20 text-warning border-none text-xs">
-                Intermediate
-              </Badge>
             </div>
           </Card>
         </div>
@@ -130,7 +124,7 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Recent Achievements</h3>
         <div className="space-y-3">
-          <Card className="p-3 bg-gradient-card shadow-neomorph">
+          <Card className="p-3 bg-gradient-card">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
                 <Trophy className="w-4 h-4 text-primary" />
@@ -142,7 +136,7 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
             </div>
           </Card>
           
-          <Card className="p-3 bg-gradient-card shadow-neomorph">
+          <Card className="p-3 bg-gradient-card">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center">
                 <Zap className="w-4 h-4 text-accent" />

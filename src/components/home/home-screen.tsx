@@ -18,7 +18,7 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
       <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
         <div className="flex items-center space-x-3">
           <div 
-            className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+            className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
             onClick={onViewProfile}
           >
             <span className="text-xl font-bold text-primary-foreground">A</span>
@@ -31,7 +31,7 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
         
         <div className="flex items-center space-x-2">
           <Badge variant="outline" className="bg-gradient-accent text-accent-foreground border-none">
-            Pro Player
+            Active
           </Badge>
         </div>
       </div>
@@ -79,7 +79,7 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
               <SportIcon 
                 sport={sport as any} 
                 size="lg" 
-                className="hover:shadow-glow-accent cursor-pointer" 
+                className="cursor-pointer active:scale-95 transition-transform" 
               />
               <p className="text-xs text-center mt-2 capitalize font-medium">
                 {sport.replace('-', ' ')}
@@ -96,7 +96,7 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
           <Button variant="ghost" size="sm">See All</Button>
         </div>
         
-        <Card className="p-4 bg-gradient-card shadow-neomorph">
+        <Card className="p-4 bg-gradient-card">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>

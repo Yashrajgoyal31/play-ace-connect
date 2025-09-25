@@ -71,15 +71,11 @@ All colors MUST be HSL for consistency.
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     
-    /* Neumorphic Shadows */
-    --neomorph-shadow: 
-      8px 8px 16px hsl(var(--shadow-dark)),
-      -8px -8px 16px hsl(var(--shadow-light));
-    --neomorph-inset: 
-      inset 4px 4px 8px hsl(var(--shadow-dark)),
-      inset -4px -4px 8px hsl(var(--shadow-light));
-    --glow-primary: 0 0 20px hsl(var(--shadow-primary) / 0.3);
-    --glow-accent: 0 0 20px hsl(var(--shadow-purple) / 0.3);
+    /* Shadows removed for clean mobile design */
+    --neomorph-shadow: none;
+    --neomorph-inset: none;
+    --glow-primary: none;
+    --glow-accent: none;
   }
 
   * {

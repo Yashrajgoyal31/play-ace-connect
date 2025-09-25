@@ -73,10 +73,7 @@ export default {
       },
       
       boxShadow: {
-        'neomorph': 'var(--neomorph-shadow)',
-        'neomorph-inset': 'var(--neomorph-inset)',
-        'glow-primary': 'var(--glow-primary)',
-        'glow-accent': 'var(--glow-accent)',
+        'none': 'none',
       },
       
       fontFamily: {
