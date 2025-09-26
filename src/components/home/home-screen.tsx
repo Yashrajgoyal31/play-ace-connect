@@ -9,9 +9,10 @@ interface HomeScreenProps {
   onStartMatch: () => void;
   onFindPlayers: () => void;
   onViewProfile: () => void;
+  onViewTournaments?: () => void;
 }
 
-export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeScreenProps) => {
+export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewTournaments }: HomeScreenProps) => {
   return (
     <MobileContainer className="pb-20">
       {/* Header */}
@@ -63,7 +64,11 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
             <span className="text-sm font-medium">Find Courts</span>
           </Button>
           
-          <Button variant="neomorph" className="h-24 flex-col space-y-2">
+          <Button 
+            variant="neomorph" 
+            className="h-24 flex-col space-y-2"
+            onClick={onViewTournaments}
+          >
             <Trophy className="w-6 h-6 text-success" />
             <span className="text-sm font-medium">Tournaments</span>
           </Button>
@@ -137,9 +142,14 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile }: HomeS
             <span className="text-xs font-medium">Home</span>
           </Button>
           
-          <Button variant="ghost" size="icon" className="flex-col space-y-1">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="flex-col space-y-1"
+            onClick={onViewTournaments}
+          >
             <Trophy className="w-5 h-5" />
-            <span className="text-xs">Matches</span>
+            <span className="text-xs">Tournaments</span>
           </Button>
           
           <Button variant="ghost" size="icon" className="flex-col space-y-1">

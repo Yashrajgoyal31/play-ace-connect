@@ -6,12 +6,16 @@ import { MatchSetup } from '@/components/match/match-setup';
 import { BadmintonScoring } from '@/components/scoring/badminton-scoring';
 import { ProfileScreen } from '@/components/profile/profile-screen';
 import { PlayersScreen } from '@/components/players/players-screen';
+import { TournamentList } from '@/components/tournaments/tournament-list';
+import { TournamentCreate } from '@/components/tournaments/tournament-create';
+import { TournamentDetail } from '@/components/tournaments/tournament-detail';
 
-type AppState = 'welcome' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players';
+type AppState = 'welcome' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'tournaments' | 'tournament-create' | 'tournament-detail';
 
 export const AppStateManager = () => {
   const [currentState, setCurrentState] = useState<AppState>('welcome');
   const [selectedSport, setSelectedSport] = useState<string>('');
+  const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
 
   const renderCurrentScreen = () => {
     switch (currentState) {
@@ -28,6 +32,7 @@ export const AppStateManager = () => {
             onStartMatch={() => setCurrentState('sport-selection')}
             onFindPlayers={() => setCurrentState('players')}
             onViewProfile={() => setCurrentState('profile')}
+            onViewTournaments={() => setCurrentState('tournaments')}
           />
         );
       
@@ -72,6 +77,47 @@ export const AppStateManager = () => {
             onEndMatch={() => setCurrentState('home')}
           />
         );
+
+      case 'tournaments':
+        return (
+          <TournamentList 
+            onBack={() => setCurrentState('home')}
+            onCreateTournament={() => setCurrentState('tournament-create')}
+            onJoinTournament={(tournamentId) => {
+              setSelectedTournamentId(tournamentId);
+              setCurrentState('tournament-detail');
+            }}
+            onViewTournament={(tournamentId) => {
+              setSelectedTournamentId(tournamentId);
+              setCurrentState('tournament-detail');
+            }}
+          />
+        );
+
+      case 'tournament-create':
+        return (
+          <TournamentCreate 
+            onBack={() => setCurrentState('tournaments')}
+            onCreateTournament={(tournamentData) => {
+              console.log('Creating tournament:', tournamentData);
+              setCurrentState('tournaments');
+            }}
+          />
+        );
+
+      case 'tournament-detail':
+        return (
+          <TournamentDetail 
+            tournamentId={selectedTournamentId}
+            onBack={() => setCurrentState('tournaments')}
+            onJoinTournament={() => {
+              console.log('Joining tournament:', selectedTournamentId);
+            }}
+            onViewMatch={(matchId) => {
+              console.log('Viewing match:', matchId);
+            }}
+          />
+        );
       
       default:
         return (
@@ -79,6 +125,7 @@ export const AppStateManager = () => {
             onStartMatch={() => setCurrentState('sport-selection')}
             onFindPlayers={() => setCurrentState('players')}
             onViewProfile={() => setCurrentState('profile')}
+            onViewTournaments={() => setCurrentState('tournaments')}
           />
         );
     }
