@@ -71,10 +71,21 @@ export const AppStateManager = () => {
         );
       
       case 'scoring':
+        // This will be handled by sport-specific components
+        const mockMatchSetup = {
+          players: { 
+            teamA: ['Player 1', 'Player 2'], 
+            teamB: ['Player 3', 'Player 4'] 
+          },
+          format: 'doubles' as const,
+          bestOf: 3
+        };
+        
         return (
           <BadmintonScoring 
             onBack={() => setCurrentState('home')}
             onEndMatch={() => setCurrentState('home')}
+            matchSetup={mockMatchSetup}
           />
         );
 
