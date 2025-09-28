@@ -5,9 +5,10 @@ import heroImage from "@/assets/hero-sports-bg.jpg";
 
 interface WelcomeScreenProps {
   onGetStarted: () => void;
+  onOrganizationSetup: () => void;
 }
 
-export const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
+export const WelcomeScreen = ({ onGetStarted, onOrganizationSetup }: WelcomeScreenProps) => {
   return (
     <MobileContainer className="relative overflow-hidden">
       {/* Hero Background */}
@@ -57,16 +58,24 @@ export const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
         </div>
 
         {/* CTA Section */}
-        <div className="w-full space-y-6 pb-8">
+        <div className="w-full space-y-4 pb-8">
           <Button 
             variant="hero" 
             className="w-full shadow-glow-primary hover:shadow-glow-accent"
-            onClick={onGetStarted}
+            onClick={onOrganizationSetup}
           >
-            Get Started
+            Set Up Organization
           </Button>
           
-          <p className="text-sm text-foreground/70">
+          <Button 
+            variant="outline" 
+            className="w-full"
+            onClick={onGetStarted}
+          >
+            Continue as Individual
+          </Button>
+          
+          <p className="text-sm text-foreground/70 text-center">
             Join thousands of athletes improving their game
           </p>
         </div>

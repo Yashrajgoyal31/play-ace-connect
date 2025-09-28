@@ -12,6 +12,7 @@ interface TournamentDetailProps {
   onBack: () => void;
   onJoinTournament: () => void;
   onViewMatch: (matchId: string) => void;
+  onRequestVerification: () => void;
 }
 
 const mockTournament = {
@@ -57,7 +58,7 @@ const mockTournament = {
   ]
 };
 
-export const TournamentDetail = ({ tournamentId, onBack, onJoinTournament, onViewMatch }: TournamentDetailProps) => {
+export const TournamentDetail = ({ tournamentId, onBack, onJoinTournament, onViewMatch, onRequestVerification }: TournamentDetailProps) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const tournament = mockTournament; // In real app, fetch by tournamentId
 
@@ -166,6 +167,15 @@ export const TournamentDetail = ({ tournamentId, onBack, onJoinTournament, onVie
             className={isFollowing ? "bg-gradient-accent text-accent-foreground" : ""}
           >
             <Bell className="w-5 h-5" />
+          </Button>
+          
+          <Button 
+            variant="outline"
+            size="icon"
+            onClick={onRequestVerification}
+            className="bg-warning/10 border-warning/30"
+          >
+            <Bell className="w-5 h-5 text-warning" />
           </Button>
         </div>
       </div>

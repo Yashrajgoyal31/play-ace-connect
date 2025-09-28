@@ -144,7 +144,10 @@ export const BadmintonScoring = ({ onBack, onEndMatch, matchSetup }: BadmintonSc
                 <p className="font-semibold">Team A</p>
               </div>
               <p className="text-xs text-muted-foreground mb-2">
-                {matchSetup.players.teamA.join(' & ')}
+                {matchSetup.format === 'singles' 
+                  ? matchSetup.players.teamA[0] 
+                  : matchSetup.players.teamA.join(' & ')
+                }
               </p>
               
               <Button 
@@ -170,7 +173,10 @@ export const BadmintonScoring = ({ onBack, onEndMatch, matchSetup }: BadmintonSc
                 )}
               </div>
               <p className="text-xs text-muted-foreground mb-2">
-                {matchSetup.players.teamB.join(' & ')}
+                {matchSetup.format === 'singles' 
+                  ? matchSetup.players.teamB[0] 
+                  : matchSetup.players.teamB.join(' & ')
+                }
               </p>
               
               <Button 
