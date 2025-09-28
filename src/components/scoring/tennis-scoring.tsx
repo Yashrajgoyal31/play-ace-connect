@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, RotateCcw, Pause, Share, Users } from "lucide-react";
+import { ArrowLeft, RotateCcw, Pause, Share, Users, UserCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,12 @@ interface TennisScoringProps {
     players: { teamA: string[]; teamB: string[] };
     format: 'singles' | 'doubles';
     bestOf: number;
+    officials?: {
+      umpire?: string;
+      lineJudges?: string[];
+      ballKids?: string[];
+    };
+    scorers?: string[];
   };
 }
 
@@ -314,6 +320,38 @@ export const TennisScoring = ({ onBack, onEndMatch, matchSetup }: TennisScoringP
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Officials & Scorers */}
+      <div className="px-6 py-4">
+        <Card className="p-4 bg-card/50">
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <UserCheck className="w-4 h-4" />
+              <p className="text-sm font-medium">Match Officials</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <p className="text-muted-foreground">Umpire:</p>
+                <p className="font-medium">{matchSetup.officials?.umpire || 'Not assigned'}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Scorers:</p>
+                <p className="font-medium">
+                  {matchSetup.scorers?.join(', ') || 'Auto-scoring'}
+                </p>
+              </div>
+            </div>
+            
+            {matchSetup.officials?.lineJudges && matchSetup.officials.lineJudges.length > 0 && (
+              <div>
+                <p className="text-muted-foreground text-xs">Line Judges:</p>
+                <p className="font-medium text-xs">{matchSetup.officials.lineJudges.join(', ')}</p>
+              </div>
+            )}
+          </div>
+        </Card>
+      </div>
 
       {/* Game Controls */}
       <div className="px-6 space-y-4">

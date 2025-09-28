@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, RotateCcw, Pause, Share } from "lucide-react";
+import { ArrowLeft, RotateCcw, Pause, Share, UserCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,11 @@ interface TableTennisScoringProps {
     players: { teamA: string[]; teamB: string[] };
     bestOf: number;
     pointsPerGame: 11 | 21;
+    officials?: {
+      umpire?: string;
+      assistantUmpire?: string;
+    };
+    scorers?: string[];
   };
 }
 
@@ -245,6 +250,36 @@ export const TableTennisScoring = ({ onBack, onEndMatch, matchSetup }: TableTenn
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Officials & Scorers */}
+      <div className="px-6 py-4">
+        <Card className="p-4 bg-card/50">
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <UserCheck className="w-4 h-4" />
+              <p className="text-sm font-medium">Match Officials</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <p className="text-muted-foreground">Umpire:</p>
+                <p className="font-medium">{matchSetup.officials?.umpire || 'Not assigned'}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Assistant:</p>
+                <p className="font-medium">{matchSetup.officials?.assistantUmpire || 'Not assigned'}</p>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-muted-foreground text-xs">Scorers:</p>
+              <p className="font-medium text-xs">
+                {matchSetup.scorers?.join(', ') || 'Auto-scoring'}
+              </p>
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* Game Controls */}
       <div className="px-6 space-y-4">
