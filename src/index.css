@@ -25,11 +25,16 @@ All colors MUST be HSL for consistency.
     --primary-dark: 15 100% 50%; /* Darker orange */
     --primary-foreground: 222 34% 8%; /* Dark text on orange */
     
-    /* Purple Accent System */
-    --accent: 250 100% 70%; /* Purple accent */
+    /* Purple Accent System - Enhanced for Primary Usage */
+    --accent: 250 100% 70%; /* Purple accent - now more prominent */
     --accent-light: 260 100% 80%; /* Light purple */
     --accent-dark: 240 100% 60%; /* Dark purple */
     --accent-foreground: 30 100% 95%;
+
+    /* Purple variants for different UI elements */
+    --purple-primary: 260 100% 65%; /* Main purple for primary actions */
+    --purple-secondary: 250 80% 75%; /* Softer purple for secondary elements */
+    --purple-glow: 250 100% 70%; /* Purple glow effects */
 
     /* Semantic Colors */
     --secondary: 222 20% 18%; /* Muted card color */
@@ -52,9 +57,10 @@ All colors MUST be HSL for consistency.
     --input: 222 20% 15%; /* Input backgrounds */
     --ring: 25 100% 60%; /* Focus rings use primary orange */
 
-    /* Neumorphic Shadow System */
+    /* Neumorphic Shadow System - Enhanced Purple */
     --shadow-primary: 25 100% 60%; /* Orange glow */
-    --shadow-purple: 250 100% 70%; /* Purple glow */
+    --shadow-purple: 250 100% 70%; /* Purple glow - enhanced */
+    --shadow-accent: 250 100% 70%; /* Purple accent shadow */
     --shadow-dark: 222 50% 3%; /* Dark shadow */
     --shadow-light: 222 20% 25%; /* Light highlight */
 
@@ -62,9 +68,10 @@ All colors MUST be HSL for consistency.
     --radius: 1.5rem; /* Rounded corners for neumorphic feel */
     --font-family: 'Inter', system-ui, sans-serif;
     
-    /* Gradient Definitions */
+    /* Gradient Definitions - Enhanced Purple */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-light)) 100%);
+    --gradient-purple: linear-gradient(135deg, hsl(var(--purple-primary)) 0%, hsl(var(--purple-secondary)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card-elevated)) 100%);
     
     /* Animation System */

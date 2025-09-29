@@ -3,37 +3,44 @@ import { SportIcon } from "@/components/ui/sport-icon";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Play, Users, MapPin, Trophy, Plus } from "lucide-react";
+import { Play, Users, MapPin, Trophy, Plus, Target, Medal, TrendingUp } from "lucide-react";
 
-interface HomeScreenProps {
+interface IndividualDashboardProps {
   onStartMatch: () => void;
   onFindPlayers: () => void;
   onViewProfile: () => void;
   onViewTournaments?: () => void;
+  onViewLeaderboard?: () => void;
 }
 
-export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewTournaments }: HomeScreenProps) => {
+export const IndividualDashboard = ({ 
+  onStartMatch, 
+  onFindPlayers, 
+  onViewProfile, 
+  onViewTournaments,
+  onViewLeaderboard 
+}: IndividualDashboardProps) => {
   return (
     <MobileContainer className="pb-20">
       {/* Header */}
       <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
         <div className="flex items-center space-x-3">
           <div 
-            className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+            className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
             onClick={onViewProfile}
           >
-            <span className="text-xl font-bold text-primary-foreground">A</span>
+            <span className="text-xl font-bold text-accent-foreground">A</span>
           </div>
           <div>
-            <h2 className="font-semibold">Hi 👋</h2>
+            <h2 className="font-semibold">Let's score! 🏆</h2>
             <p className="text-sm text-muted-foreground">Alice Johnson</p>
           </div>
         </div>
         
         <div className="flex items-center space-x-2">
-          <Badge variant="outline" className="bg-gradient-accent text-accent-foreground border-none">
-            Active
-          </Badge>
+          <Button variant="ghost" size="icon" onClick={onStartMatch}>
+            <Plus className="w-5 h-5 text-accent" />
+          </Button>
         </div>
       </div>
 
@@ -43,10 +50,10 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
         <div className="grid grid-cols-2 gap-4">
           <Button 
             variant="neomorph" 
-            className="h-24 flex-col space-y-2"
+            className="h-24 flex-col space-y-2 border-2 border-accent/20"
             onClick={onStartMatch}
           >
-            <Play className="w-6 h-6 text-primary" />
+            <Play className="w-6 h-6 text-accent" />
             <span className="text-sm font-medium">Start Match</span>
           </Button>
           
@@ -55,13 +62,17 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
             className="h-24 flex-col space-y-2"
             onClick={onFindPlayers}
           >
-            <Users className="w-6 h-6 text-accent" />
+            <Users className="w-6 h-6 text-primary" />
             <span className="text-sm font-medium">Find Players</span>
           </Button>
           
-          <Button variant="neomorph" className="h-24 flex-col space-y-2">
-            <MapPin className="w-6 h-6 text-warning" />
-            <span className="text-sm font-medium">Find Courts</span>
+          <Button 
+            variant="neomorph" 
+            className="h-24 flex-col space-y-2"
+            onClick={onViewLeaderboard}
+          >
+            <TrendingUp className="w-6 h-6 text-accent" />
+            <span className="text-sm font-medium">Leaderboard</span>
           </Button>
           
           <Button 
@@ -69,13 +80,13 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
             className="h-24 flex-col space-y-2"
             onClick={onViewTournaments}
           >
-            <Trophy className="w-6 h-6 text-success" />
+            <Trophy className="w-6 h-6 text-warning" />
             <span className="text-sm font-medium">Tournaments</span>
           </Button>
         </div>
       </div>
 
-      {/* Active Sports */}
+      {/* Your Sports */}
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Your Sports</h3>
         <div className="flex space-x-4 overflow-x-auto pb-2">
@@ -91,6 +102,36 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
               </p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Performance Stats */}
+      <div className="px-6 py-4">
+        <h3 className="text-lg font-semibold mb-4">Your Performance</h3>
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="p-4 bg-gradient-accent/10 border border-accent/20">
+            <div className="text-center">
+              <Medal className="w-6 h-6 text-accent mx-auto mb-2" />
+              <p className="text-2xl font-bold text-accent">12</p>
+              <p className="text-xs text-muted-foreground">Matches Won</p>
+            </div>
+          </Card>
+          
+          <Card className="p-4 bg-gradient-card">
+            <div className="text-center">
+              <Target className="w-6 h-6 text-primary mx-auto mb-2" />
+              <p className="text-2xl font-bold">85%</p>
+              <p className="text-xs text-muted-foreground">Win Rate</p>
+            </div>
+          </Card>
+          
+          <Card className="p-4 bg-gradient-card">
+            <div className="text-center">
+              <Trophy className="w-6 h-6 text-warning mx-auto mb-2" />
+              <p className="text-2xl font-bold">3</p>
+              <p className="text-xs text-muted-foreground">Tournaments</p>
+            </div>
+          </Card>
         </div>
       </div>
 
@@ -113,32 +154,28 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
           
           <div className="flex items-center justify-between">
             <div className="text-center">
-              <p className="font-semibold">Team A</p>
-              <p className="text-xs text-muted-foreground">Alice & Bob</p>
+              <p className="font-semibold">You</p>
+              <p className="text-xs text-muted-foreground">Alice</p>
             </div>
             
-            <div className="text-center bg-primary/10 rounded-xl px-4 py-2">
-              <p className="text-2xl font-bold">21:18</p>
+            <div className="text-center bg-accent/10 border border-accent/20 rounded-xl px-4 py-2">
+              <p className="text-2xl font-bold text-accent">21:18</p>
               <p className="text-xs text-muted-foreground">Current Score</p>
             </div>
             
             <div className="text-center">
-              <p className="font-semibold">Team B</p>
-              <p className="text-xs text-muted-foreground">Carol & Dave</p>
+              <p className="font-semibold">Opponent</p>
+              <p className="text-xs text-muted-foreground">John</p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Floating Action Button */}
-      <Button variant="floating" onClick={onStartMatch}>
-        <Plus className="w-6 h-6" />
-      </Button>
-
+      {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-card-elevated/95 backdrop-blur-md border-t border-border/50">
         <div className="flex items-center justify-around py-3 px-6">
-          <Button variant="ghost" size="icon" className="flex-col space-y-1 text-primary">
-            <div className="w-6 h-6 bg-primary rounded-full shadow-glow-primary"></div>
+          <Button variant="ghost" size="icon" className="flex-col space-y-1 text-accent">
+            <div className="w-6 h-6 bg-accent rounded-full shadow-glow-primary"></div>
             <span className="text-xs font-medium">Home</span>
           </Button>
           
@@ -152,9 +189,14 @@ export const HomeScreen = ({ onStartMatch, onFindPlayers, onViewProfile, onViewT
             <span className="text-xs">Tournaments</span>
           </Button>
           
-          <Button variant="ghost" size="icon" className="flex-col space-y-1">
-            <Users className="w-5 h-5" />
-            <span className="text-xs">Social</span>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="flex-col space-y-1"
+            onClick={onViewLeaderboard}
+          >
+            <TrendingUp className="w-5 h-5" />
+            <span className="text-xs">Rankings</span>
           </Button>
           
           <Button variant="ghost" size="icon" className="flex-col space-y-1">

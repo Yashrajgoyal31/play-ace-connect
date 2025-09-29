@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { WelcomeScreen } from '@/components/onboarding/welcome-screen';
 import { OrganizationSetup } from '@/components/onboarding/organization-setup';
-import { HomeScreen } from '@/components/home/home-screen';
+import { IndividualProfile } from '@/components/onboarding/individual-profile';
+import { IndividualDashboard } from '@/components/home/individual-dashboard';
+import { OrganizationDashboard } from '@/components/home/organization-dashboard';
 import { SportSelection } from '@/components/match/sport-selection';
 import { MatchSetup } from '@/components/match/match-setup';
 import { BadmintonScoring } from '@/components/scoring/badminton-scoring';
 import { ProfileScreen } from '@/components/profile/profile-screen';
 import { PlayersScreen } from '@/components/players/players-screen';
+import { LeaderboardScreen } from '@/components/leaderboard/leaderboard-screen';
 import { TournamentList } from '@/components/tournaments/tournament-list';
 import { TournamentCreate } from '@/components/tournaments/tournament-create';
 import { TournamentDetail } from '@/components/tournaments/tournament-detail';
@@ -14,7 +17,7 @@ import { TournamentVerification } from '@/components/tournaments/tournament-veri
 import { TournamentPromotion } from '@/components/tournaments/tournament-promotion';
 import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
 
-type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion';
+type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion';
 
 export const AppStateManager = () => {
   const [currentState, setCurrentState] = useState<AppState>('welcome');
@@ -22,15 +25,23 @@ export const AppStateManager = () => {
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
   const [organizationType, setOrganizationType] = useState<string>('');
   const [organizerProfile, setOrganizerProfile] = useState<any>(null);
+  const [individualProfile, setIndividualProfile] = useState<any>(null);
   const [currentTournamentData, setCurrentTournamentData] = useState<any>(null);
+  const [userType, setUserType] = useState<'organization' | 'individual'>('individual');
 
   const renderCurrentScreen = () => {
     switch (currentState) {
       case 'welcome':
         return (
           <WelcomeScreen 
-            onGetStarted={() => setCurrentState('home')}
-            onOrganizationSetup={() => setCurrentState('organization-setup')}
+            onGetStarted={() => {
+              setUserType('individual');
+              setCurrentState('individual-profile');
+            }}
+            onOrganizationSetup={() => {
+              setUserType('organization');
+              setCurrentState('organization-setup');
+            }}
           />
         );
       
@@ -55,14 +66,33 @@ export const AppStateManager = () => {
             }}
           />
         );
+
+      case 'individual-profile':
+        return (
+          <IndividualProfile 
+            onBack={() => setCurrentState('welcome')}
+            onComplete={(profileData) => {
+              setIndividualProfile(profileData);
+              setCurrentState('home');
+            }}
+          />
+        );
       
       case 'home':
-        return (
-          <HomeScreen 
+        return userType === 'organization' ? (
+          <OrganizationDashboard 
+            onStartMatch={() => setCurrentState('sport-selection')}
+            onViewProfile={() => setCurrentState('profile')}
+            onViewTournaments={() => setCurrentState('tournaments')}
+            organizerProfile={organizerProfile}
+          />
+        ) : (
+          <IndividualDashboard 
             onStartMatch={() => setCurrentState('sport-selection')}
             onFindPlayers={() => setCurrentState('players')}
             onViewProfile={() => setCurrentState('profile')}
             onViewTournaments={() => setCurrentState('tournaments')}
+            onViewLeaderboard={() => setCurrentState('leaderboard')}
           />
         );
       
@@ -96,6 +126,13 @@ export const AppStateManager = () => {
       case 'players':
         return (
           <PlayersScreen 
+            onBack={() => setCurrentState('home')}
+          />
+        );
+
+      case 'leaderboard':
+        return (
+          <LeaderboardScreen 
             onBack={() => setCurrentState('home')}
           />
         );
@@ -187,12 +224,20 @@ export const AppStateManager = () => {
         );
       
       default:
-        return (
-          <HomeScreen 
+        return userType === 'organization' ? (
+          <OrganizationDashboard 
+            onStartMatch={() => setCurrentState('sport-selection')}
+            onViewProfile={() => setCurrentState('profile')}
+            onViewTournaments={() => setCurrentState('tournaments')}
+            organizerProfile={organizerProfile}
+          />
+        ) : (
+          <IndividualDashboard 
             onStartMatch={() => setCurrentState('sport-selection')}
             onFindPlayers={() => setCurrentState('players')}
             onViewProfile={() => setCurrentState('profile')}
             onViewTournaments={() => setCurrentState('tournaments')}
+            onViewLeaderboard={() => setCurrentState('leaderboard')}
           />
         );
     }
