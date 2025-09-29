@@ -11,14 +11,18 @@ import { TournamentList } from '@/components/tournaments/tournament-list';
 import { TournamentCreate } from '@/components/tournaments/tournament-create';
 import { TournamentDetail } from '@/components/tournaments/tournament-detail';
 import { TournamentVerification } from '@/components/tournaments/tournament-verification';
+import { TournamentPromotion } from '@/components/tournaments/tournament-promotion';
+import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
 
-type AppState = 'welcome' | 'organization-setup' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification';
+type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion';
 
 export const AppStateManager = () => {
   const [currentState, setCurrentState] = useState<AppState>('welcome');
   const [selectedSport, setSelectedSport] = useState<string>('');
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
   const [organizationType, setOrganizationType] = useState<string>('');
+  const [organizerProfile, setOrganizerProfile] = useState<any>(null);
+  const [currentTournamentData, setCurrentTournamentData] = useState<any>(null);
 
   const renderCurrentScreen = () => {
     switch (currentState) {
@@ -35,6 +39,18 @@ export const AppStateManager = () => {
           <OrganizationSetup 
             onComplete={(orgType) => {
               setOrganizationType(orgType);
+              setCurrentState('organizer-profile');
+            }}
+          />
+        );
+
+      case 'organizer-profile':
+        return (
+          <OrganizerProfile 
+            organizationType={organizationType}
+            onBack={() => setCurrentState('organization-setup')}
+            onComplete={(profileData) => {
+              setOrganizerProfile(profileData);
               setCurrentState('home');
             }}
           />
@@ -125,7 +141,12 @@ export const AppStateManager = () => {
             onBack={() => setCurrentState('tournaments')}
             onCreateTournament={(tournamentData) => {
               console.log('Creating tournament:', tournamentData);
-              setCurrentState('tournaments');
+              setCurrentTournamentData(tournamentData);
+              if (tournamentData.promotional.generateCreative || tournamentData.promotional.generateQR) {
+                setCurrentState('tournament-promotion');
+              } else {
+                setCurrentState('tournaments');
+              }
             }}
           />
         );
@@ -154,6 +175,14 @@ export const AppStateManager = () => {
               console.log('Verification submitted:', data);
               setCurrentState('tournament-detail');
             }}
+          />
+        );
+
+      case 'tournament-promotion':
+        return (
+          <TournamentPromotion 
+            tournamentData={currentTournamentData}
+            onBack={() => setCurrentState('tournaments')}
           />
         );
       

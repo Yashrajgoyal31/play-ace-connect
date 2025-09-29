@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SportIcon } from "@/components/ui/sport-icon";
 import { MobileContainer } from "@/components/ui/mobile-container";
-import { ArrowLeft, Upload, MapPin, Calendar, Users, Trophy, IndianRupee } from "lucide-react";
+import { ArrowLeft, Upload, MapPin, Calendar, Users, Trophy, IndianRupee, QrCode, Palette, Download } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
@@ -30,6 +30,16 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
     prizePool: 0,
     hasEntryFee: false,
     isPrivate: false,
+    season: {
+      name: "",
+      year: new Date().getFullYear(),
+      hasSeasons: false
+    },
+    promotional: {
+      generateCreative: false,
+      generateQR: false,
+      qrData: null as string | null
+    },
     rules: {
       bestOf: 3,
       timeLimit: 90,
@@ -38,7 +48,8 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
   });
 
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 4;
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const totalSteps = 5;
 
   const sports = [
     { id: "badminton", name: "Badminton" },
@@ -66,7 +77,49 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
   };
 
   const handleCreate = () => {
-    onCreateTournament(formData);
+    const tournamentData = {
+      ...formData,
+      promotional: {
+        ...formData.promotional,
+        qrData: qrCodeUrl
+      }
+    };
+    onCreateTournament(tournamentData);
+  };
+
+  const generateQRCode = async () => {
+    try {
+      const QRCode = (await import('qrcode')).default;
+      const tournamentUrl = `https://yourapp.com/tournament/${formData.name.toLowerCase().replace(/\s+/g, '-')}`;
+      const qrDataUrl = await QRCode.toDataURL(tournamentUrl, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      setQrCodeUrl(qrDataUrl);
+      setFormData({
+        ...formData,
+        promotional: {
+          ...formData.promotional,
+          qrData: qrDataUrl,
+          generateQR: true
+        }
+      });
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+    }
+  };
+
+  const downloadQRCode = () => {
+    if (qrCodeUrl) {
+      const link = document.createElement('a');
+      link.download = `${formData.name}-qr-code.png`;
+      link.href = qrCodeUrl;
+      link.click();
+    }
   };
 
   const renderStep = () => {
@@ -297,6 +350,144 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
         return (
           <div className="space-y-6">
             <div>
+              <h2 className="text-xl font-bold mb-2">Seasons & Promotional</h2>
+              <p className="text-muted-foreground mb-6">Set up seasons and promotional materials</p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Enable Seasons</Label>
+                  <p className="text-sm text-muted-foreground">Organize tournaments by seasons</p>
+                </div>
+                <Switch
+                  checked={formData.season.hasSeasons}
+                  onCheckedChange={(checked) => setFormData({
+                    ...formData,
+                    season: { ...formData.season, hasSeasons: checked }
+                  })}
+                />
+              </div>
+
+              {formData.season.hasSeasons && (
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="seasonName">Season Name</Label>
+                    <Input
+                      id="seasonName"
+                      placeholder="e.g., Summer Championship 2024"
+                      value={formData.season.name}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        season: { ...formData.season, name: e.target.value }
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seasonYear">Season Year</Label>
+                    <Input
+                      id="seasonYear"
+                      type="number"
+                      value={formData.season.year}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        season: { ...formData.season, year: parseInt(e.target.value) || new Date().getFullYear() }
+                      })}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Generate Tournament Creative</Label>
+                  <p className="text-sm text-muted-foreground">Create promotional poster</p>
+                </div>
+                <Switch
+                  checked={formData.promotional.generateCreative}
+                  onCheckedChange={(checked) => setFormData({
+                    ...formData,
+                    promotional: { ...formData.promotional, generateCreative: checked }
+                  })}
+                />
+              </div>
+
+              {formData.promotional.generateCreative && (
+                <Card className="p-4 bg-gradient-accent/10">
+                  <div className="flex items-center space-x-3">
+                    <Palette className="w-8 h-8 text-primary" />
+                    <div>
+                      <h4 className="font-medium">Creative Poster</h4>
+                      <p className="text-sm text-muted-foreground">
+                        A custom poster will be generated with tournament details
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Generate QR Code</Label>
+                  <p className="text-sm text-muted-foreground">For easy tournament sharing</p>
+                </div>
+                <Switch
+                  checked={formData.promotional.generateQR}
+                  onCheckedChange={(checked) => {
+                    setFormData({
+                      ...formData,
+                      promotional: { ...formData.promotional, generateQR: checked }
+                    });
+                    if (checked && !qrCodeUrl) {
+                      generateQRCode();
+                    }
+                  }}
+                />
+              </div>
+
+              {formData.promotional.generateQR && (
+                <Card className="p-4 bg-gradient-accent/10">
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <QrCode className="w-8 h-8 text-primary" />
+                      <div>
+                        <h4 className="font-medium">QR Code</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Scan to join tournament
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {qrCodeUrl ? (
+                      <div className="flex items-center space-x-4">
+                        <img src={qrCodeUrl} alt="Tournament QR Code" className="w-20 h-20" />
+                        <div className="flex-1">
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Players can scan this QR code to join the tournament
+                          </p>
+                          <Button variant="outline" size="sm" onClick={downloadQRCode}>
+                            <Download className="w-4 h-4 mr-2" />
+                            Download QR Code
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button variant="outline" size="sm" onClick={generateQRCode}>
+                        <QrCode className="w-4 h-4 mr-2" />
+                        Generate QR Code
+                      </Button>
+                    )}
+                  </div>
+                </Card>
+              )}
+            </div>
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className="space-y-6">
+            <div>
               <h2 className="text-xl font-bold mb-2">Rules & Settings</h2>
               <p className="text-muted-foreground mb-6">Configure tournament rules</p>
             </div>
@@ -395,6 +586,18 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
                     <span>Prize Pool:</span>
                     <span className="font-medium">₹{formData.prizePool.toLocaleString()}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span>Season:</span>
+                    <span className="font-medium">
+                      {formData.season.hasSeasons ? `${formData.season.name} (${formData.season.year})` : "No seasons"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>QR Code:</span>
+                    <span className="font-medium">
+                      {formData.promotional.generateQR ? "Generated" : "Not generated"}
+                    </span>
+                  </div>
                 </div>
               </Card>
             </div>
@@ -415,6 +618,8 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
       case 3:
         return true; // Optional step
       case 4:
+        return true; // Promotional step is optional
+      case 5:
         return true; // Rules are optional
       default:
         return false;

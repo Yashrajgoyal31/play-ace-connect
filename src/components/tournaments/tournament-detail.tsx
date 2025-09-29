@@ -114,7 +114,15 @@ export const TournamentDetail = ({ tournamentId, onBack, onJoinTournament, onVie
               <SportIcon sport={tournament.sport as any} size="lg" />
               <div className="flex-1">
                 <h1 className="text-xl font-bold text-foreground mb-1">{tournament.name}</h1>
-                <p className="text-sm text-muted-foreground mb-2">{tournament.organizer}</p>
+                <div className="flex items-center space-x-2 mb-2">
+                  <p className="text-sm text-muted-foreground">{tournament.organizer}</p>
+                  <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs">
+                    ✓ Verified
+                  </Badge>
+                  <Badge variant="outline" className="bg-blue-500/10 text-blue-600 border-blue-500/20 text-xs">
+                    🏢 Sports Academy
+                  </Badge>
+                </div>
                 {getStatusBadge(tournament.status)}
               </div>
             </div>
