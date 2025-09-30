@@ -78,13 +78,10 @@ export const TournamentList = ({ onBack, onCreateTournament, onJoinTournament, o
   };
 
   return (
-    <MobileContainer className="pb-20">
+    <MobileContainer className="pb-24">
       {/* Header */}
       <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" onClick={onBack}>
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
           <div>
             <h1 className="text-xl font-bold">Tournaments</h1>
             <p className="text-sm text-muted-foreground">Join or create tournaments</p>

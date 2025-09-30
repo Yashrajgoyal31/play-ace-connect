@@ -91,7 +91,7 @@ export const TournamentDetail = ({ tournamentId, onBack, onJoinTournament, onVie
   };
 
   return (
-    <MobileContainer className="pb-20">
+    <MobileContainer className="pb-24">
       {/* Header */}
       <div className="relative">
         {/* Tournament Banner */}

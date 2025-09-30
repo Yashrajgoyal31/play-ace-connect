@@ -57,7 +57,7 @@ export const TournamentVerification = ({ tournamentId, onBack, onSubmitVerificat
   };
 
   return (
-    <MobileContainer>
+    <MobileContainer className="pb-24">
       {/* Header */}
       <div className="flex items-center justify-between p-6 bg-gradient-card">
         <div className="flex items-center space-x-3">

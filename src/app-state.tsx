@@ -16,6 +16,7 @@ import { TournamentDetail } from '@/components/tournaments/tournament-detail';
 import { TournamentVerification } from '@/components/tournaments/tournament-verification';
 import { TournamentPromotion } from '@/components/tournaments/tournament-promotion';
 import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
+import { BottomNavigation } from '@/components/ui/bottom-navigation';
 
 type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion';
 
@@ -158,69 +159,119 @@ export const AppStateManager = () => {
 
       case 'tournaments':
         return (
-          <TournamentList 
-            onBack={() => setCurrentState('home')}
-            onCreateTournament={() => setCurrentState('tournament-create')}
-            onJoinTournament={(tournamentId) => {
-              setSelectedTournamentId(tournamentId);
-              setCurrentState('tournament-detail');
-            }}
-            onViewTournament={(tournamentId) => {
-              setSelectedTournamentId(tournamentId);
-              setCurrentState('tournament-detail');
-            }}
-          />
+          <>
+            <TournamentList 
+              onBack={() => setCurrentState('home')}
+              onCreateTournament={() => setCurrentState('tournament-create')}
+              onJoinTournament={(tournamentId) => {
+                setSelectedTournamentId(tournamentId);
+                setCurrentState('tournament-detail');
+              }}
+              onViewTournament={(tournamentId) => {
+                setSelectedTournamentId(tournamentId);
+                setCurrentState('tournament-detail');
+              }}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="tournaments"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('players')}
+            />
+          </>
         );
 
       case 'tournament-create':
         return (
-          <TournamentCreate 
-            onBack={() => setCurrentState('tournaments')}
-            onCreateTournament={(tournamentData) => {
-              console.log('Creating tournament:', tournamentData);
-              setCurrentTournamentData(tournamentData);
-              if (tournamentData.promotional.generateCreative || tournamentData.promotional.generateQR) {
-                setCurrentState('tournament-promotion');
-              } else {
-                setCurrentState('tournaments');
-              }
-            }}
-          />
+          <>
+            <TournamentCreate 
+              onBack={() => setCurrentState('tournaments')}
+              onCreateTournament={(tournamentData) => {
+                console.log('Creating tournament:', tournamentData);
+                setCurrentTournamentData(tournamentData);
+                if (tournamentData.promotional.generateCreative || tournamentData.promotional.generateQR) {
+                  setCurrentState('tournament-promotion');
+                } else {
+                  setCurrentState('tournaments');
+                }
+              }}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="tournaments"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('players')}
+            />
+          </>
         );
 
       case 'tournament-detail':
         return (
-          <TournamentDetail 
-            tournamentId={selectedTournamentId}
-            onBack={() => setCurrentState('tournaments')}
-            onJoinTournament={() => {
-              console.log('Joining tournament:', selectedTournamentId);
-            }}
-            onViewMatch={(matchId) => {
-              console.log('Viewing match:', matchId);
-            }}
-            onRequestVerification={() => setCurrentState('tournament-verification')}
-          />
+          <>
+            <TournamentDetail 
+              tournamentId={selectedTournamentId}
+              onBack={() => setCurrentState('tournaments')}
+              onJoinTournament={() => {
+                console.log('Joining tournament:', selectedTournamentId);
+              }}
+              onViewMatch={(matchId) => {
+                console.log('Viewing match:', matchId);
+              }}
+              onRequestVerification={() => setCurrentState('tournament-verification')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="tournaments"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('players')}
+            />
+          </>
         );
 
       case 'tournament-verification':
         return (
-          <TournamentVerification 
-            tournamentId={selectedTournamentId}
-            onBack={() => setCurrentState('tournament-detail')}
-            onSubmitVerification={(data) => {
-              console.log('Verification submitted:', data);
-              setCurrentState('tournament-detail');
-            }}
-          />
+          <>
+            <TournamentVerification 
+              tournamentId={selectedTournamentId}
+              onBack={() => setCurrentState('tournament-detail')}
+              onSubmitVerification={(data) => {
+                console.log('Verification submitted:', data);
+                setCurrentState('tournament-detail');
+              }}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="tournaments"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('players')}
+            />
+          </>
         );
 
       case 'tournament-promotion':
         return (
-          <TournamentPromotion 
-            tournamentData={currentTournamentData}
-            onBack={() => setCurrentState('tournaments')}
-          />
+          <>
+            <TournamentPromotion 
+              tournamentData={currentTournamentData}
+              onBack={() => setCurrentState('tournaments')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="tournaments"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('players')}
+            />
+          </>
         );
       
       default:

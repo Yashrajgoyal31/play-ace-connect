@@ -3,6 +3,7 @@ import { SportIcon } from "@/components/ui/sport-icon";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BottomNavigation } from "@/components/ui/bottom-navigation";
 import { Play, Trophy, Plus, Calendar, Users, Target, Clock, Building2 } from "lucide-react";
 
 interface OrganizationDashboardProps {
@@ -21,7 +22,7 @@ export const OrganizationDashboard = ({
   const orgSports = organizerProfile?.sportsOffered || ['badminton', 'tennis', 'basketball', 'table-tennis'];
   
   return (
-    <MobileContainer className="pb-20">
+    <MobileContainer className="pb-24">
       {/* Header */}
       <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
         <div className="flex items-center space-x-3">
@@ -190,35 +191,14 @@ export const OrganizationDashboard = ({
         </Card>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-card-elevated/95 backdrop-blur-md border-t border-border/50">
-        <div className="flex items-center justify-around py-3 px-6">
-          <Button variant="ghost" size="icon" className="flex-col space-y-1 text-accent">
-            <div className="w-6 h-6 bg-accent rounded-full shadow-glow-primary"></div>
-            <span className="text-xs font-medium">Home</span>
-          </Button>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="flex-col space-y-1"
-            onClick={onViewTournaments}
-          >
-            <Trophy className="w-5 h-5" />
-            <span className="text-xs">Tournaments</span>
-          </Button>
-          
-          <Button variant="ghost" size="icon" className="flex-col space-y-1">
-            <Users className="w-5 h-5" />
-            <span className="text-xs">Players</span>
-          </Button>
-          
-          <Button variant="ghost" size="icon" className="flex-col space-y-1">
-            <Target className="w-5 h-5" />
-            <span className="text-xs">Stats</span>
-          </Button>
-        </div>
-      </div>
+      <BottomNavigation 
+        userType="organization"
+        currentSection="home"
+        onNavigateHome={() => {}}
+        onNavigateTournaments={onViewTournaments || (() => {})}
+        onNavigatePlayers={() => {}}
+        onNavigateStats={() => {}}
+      />
     </MobileContainer>
   );
 };
