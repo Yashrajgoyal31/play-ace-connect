@@ -5,7 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, User, Trophy, MapPin, Calendar } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft, User, Trophy, Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface IndividualProfileProps {
   onBack: () => void;
@@ -13,34 +18,26 @@ interface IndividualProfileProps {
 }
 
 export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps) => {
-  const [profileData, setProfileData] = useState({
-    fullName: "",
-    age: "",
-    gender: "",
-    city: "",
-    state: "",
-    primarySport: "",
-    skillLevel: "",
-    yearsPlaying: "",
-    preferredPlayTime: "",
-    goals: ""
-  });
+  const [fullName, setFullName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState<Date>();
+  const [gender, setGender] = useState("");
+  const [selectedSports, setSelectedSports] = useState<string[]>([]);
 
   const sports = [
     "Badminton", "Tennis", "Table Tennis", "Basketball", "Cricket", 
     "Football", "Volleyball", "Swimming", "Athletics", "Chess"
   ];
 
-  const skillLevels = ["Beginner", "Intermediate", "Advanced", "Professional"];
-  const playTimes = ["Morning", "Afternoon", "Evening", "Flexible"];
+  const toggleSport = (sport: string) => {
+    setSelectedSports(prev => 
+      prev.includes(sport) 
+        ? prev.filter(s => s !== sport)
+        : [...prev, sport]
+    );
+  };
 
   const isFormValid = () => {
-    return profileData.fullName && 
-           profileData.age && 
-           profileData.gender && 
-           profileData.city && 
-           profileData.primarySport && 
-           profileData.skillLevel;
+    return fullName && dateOfBirth && gender && selectedSports.length > 0;
   };
 
   return (
@@ -72,65 +69,51 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
               <Label htmlFor="fullName">Full Name*</Label>
               <Input
                 id="fullName"
-                value={profileData.fullName}
-                onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 placeholder="Enter your full name"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="age">Age*</Label>
-                <Input
-                  id="age"
-                  type="number"
-                  value={profileData.age}
-                  onChange={(e) => setProfileData({ ...profileData, age: e.target.value })}
-                  placeholder="25"
-                />
-              </div>
-              <div>
-                <Label htmlFor="gender">Gender*</Label>
-                <Select value={profileData.gender} onValueChange={(value) => setProfileData({ ...profileData, gender: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div>
+              <Label>Date of Birth*</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !dateOfBirth && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {dateOfBirth ? format(dateOfBirth, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={dateOfBirth}
+                    onSelect={setDateOfBirth}
+                    initialFocus
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>
-        </Card>
 
-        {/* Location */}
-        <Card className="p-6 bg-gradient-card">
-          <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-            <MapPin className="w-5 h-5 text-accent" />
-            <span>Location</span>
-          </h3>
-          
-          <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="city">City*</Label>
-              <Input
-                id="city"
-                value={profileData.city}
-                onChange={(e) => setProfileData({ ...profileData, city: e.target.value })}
-                placeholder="Your city"
-              />
-            </div>
-            <div>
-              <Label htmlFor="state">State*</Label>
-              <Input
-                id="state"
-                value={profileData.state}
-                onChange={(e) => setProfileData({ ...profileData, state: e.target.value })}
-                placeholder="Your state"
-              />
+              <Label htmlFor="gender">Gender*</Label>
+              <Select value={gender} onValueChange={setGender}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </Card>
@@ -139,86 +122,38 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
         <Card className="p-6 bg-gradient-card border-2 border-accent/20">
           <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
             <Trophy className="w-5 h-5 text-accent" />
-            <span>Sports Profile</span>
+            <span>Primary Sports*</span>
           </h3>
           
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="primarySport">Primary Sport*</Label>
-              <Select value={profileData.primarySport} onValueChange={(value) => setProfileData({ ...profileData, primarySport: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your main sport" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sports.map((sport) => (
-                    <SelectItem key={sport} value={sport.toLowerCase().replace(' ', '-')}>
-                      {sport}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="skillLevel">Skill Level*</Label>
-                <Select value={profileData.skillLevel} onValueChange={(value) => setProfileData({ ...profileData, skillLevel: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {skillLevels.map((level) => (
-                      <SelectItem key={level} value={level.toLowerCase()}>
-                        {level}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="yearsPlaying">Years Playing</Label>
-                <Input
-                  id="yearsPlaying"
-                  type="number"
-                  value={profileData.yearsPlaying}
-                  onChange={(e) => setProfileData({ ...profileData, yearsPlaying: e.target.value })}
-                  placeholder="5"
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">Select all sports you play</p>
+            {sports.map((sport) => (
+              <div key={sport} className="flex items-center space-x-3">
+                <Checkbox
+                  id={sport}
+                  checked={selectedSports.includes(sport)}
+                  onCheckedChange={() => toggleSport(sport)}
                 />
+                <Label
+                  htmlFor={sport}
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  {sport}
+                </Label>
               </div>
-            </div>
-
-            <div>
-              <Label htmlFor="preferredPlayTime">Preferred Play Time</Label>
-              <Select value={profileData.preferredPlayTime} onValueChange={(value) => setProfileData({ ...profileData, preferredPlayTime: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="When do you prefer to play?" />
-                </SelectTrigger>
-                <SelectContent>
-                  {playTimes.map((time) => (
-                    <SelectItem key={time} value={time.toLowerCase()}>
-                      {time}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="goals">Goals & Aspirations</Label>
-              <Input
-                id="goals"
-                value={profileData.goals}
-                onChange={(e) => setProfileData({ ...profileData, goals: e.target.value })}
-                placeholder="What are your sports goals?"
-              />
-            </div>
+            ))}
           </div>
         </Card>
 
         {/* Complete Button */}
         <Button 
           className="w-full bg-gradient-accent hover:bg-accent/90" 
-          onClick={() => onComplete(profileData)}
+          onClick={() => onComplete({ 
+            fullName, 
+            dateOfBirth, 
+            gender, 
+            primarySports: selectedSports 
+          })}
           disabled={!isFormValid()}
         >
           Complete Setup
