@@ -135,6 +135,7 @@ export const AppStateManager = () => {
         return (
           <LeaderboardScreen 
             onBack={() => setCurrentState('home')}
+            onViewProfile={(playerId) => setCurrentState('profile')}
           />
         );
       

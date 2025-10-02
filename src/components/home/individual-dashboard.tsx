@@ -4,7 +4,12 @@ import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BottomNavigation } from "@/components/ui/bottom-navigation";
-import { Play, Users, Trophy, Plus, Target, Medal, TrendingUp } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Play, Trophy, Plus, Target, Medal, Calendar, MapPin, Search } from "lucide-react";
+import { useState } from "react";
 
 interface IndividualDashboardProps {
   onStartMatch: () => void;
@@ -21,26 +26,69 @@ export const IndividualDashboard = ({
   onViewTournaments,
   onViewLeaderboard 
 }: IndividualDashboardProps) => {
+  const [showAddSportDialog, setShowAddSportDialog] = useState(false);
+  const [activeSports, setActiveSports] = useState(['badminton', 'tennis', 'basketball', 'table-tennis']);
+  const [sportSearch, setSportSearch] = useState("");
+  const [selectedNewSports, setSelectedNewSports] = useState<string[]>([]);
+  
+  const allSports = [
+    'badminton', 'tennis', 'basketball', 'table-tennis', 'cricket', 
+    'football', 'volleyball', 'swimming', 'athletics', 'chess', 'hockey', 'golf'
+  ];
+  
+  const availableSports = allSports.filter(sport => !activeSports.includes(sport));
+  const filteredAvailableSports = availableSports.filter(sport => 
+    sport.toLowerCase().includes(sportSearch.toLowerCase())
+  );
+  
+  const handleAddSports = () => {
+    setActiveSports([...activeSports, ...selectedNewSports]);
+    setSelectedNewSports([]);
+    setSportSearch("");
+    setShowAddSportDialog(false);
+  };
+  
   return (
     <MobileContainer className="pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
-        <div className="flex items-center space-x-3">
-          <div 
-            className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-            onClick={onViewProfile}
-          >
-            <span className="text-xl font-bold text-accent-foreground">A</span>
+      <div className="p-6 bg-gradient-to-r from-card to-card-elevated">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div 
+              className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+              onClick={onViewProfile}
+            >
+              <span className="text-xl font-bold text-accent-foreground">A</span>
+            </div>
+            <div>
+              <h2 className="font-semibold text-lg">Alice Johnson</h2>
+              <p className="text-sm text-muted-foreground">Let's score! 🏆</p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-semibold">Let's score! 🏆</h2>
-            <p className="text-sm text-muted-foreground">Alice Johnson</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-2">
+          
           <Button variant="ghost" size="icon" onClick={onStartMatch}>
             <Plus className="w-5 h-5 text-accent" />
+          </Button>
+        </div>
+        
+        {/* Your Sports - Moved here */}
+        <div className="flex items-center space-x-3 overflow-x-auto pb-2">
+          {activeSports.map((sport) => (
+            <div key={sport} className="flex-shrink-0">
+              <SportIcon 
+                sport={sport as any} 
+                size="lg" 
+                className="cursor-pointer active:scale-95 transition-transform w-12 h-12" 
+              />
+            </div>
+          ))}
+          <Button 
+            variant="outline" 
+            size="icon"
+            className="flex-shrink-0 w-12 h-12 rounded-full"
+            onClick={() => setShowAddSportDialog(true)}
+          >
+            <Plus className="w-5 h-5" />
           </Button>
         </div>
       </div>
@@ -48,63 +96,16 @@ export const IndividualDashboard = ({
       {/* Quick Actions */}
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <Button 
-            variant="neomorph" 
-            className="h-24 flex-col space-y-2 border-2 border-accent/20"
-            onClick={onStartMatch}
-          >
-            <Play className="w-6 h-6 text-accent" />
-            <span className="text-sm font-medium">Start Match</span>
-          </Button>
-          
-          <Button 
-            variant="neomorph" 
-            className="h-24 flex-col space-y-2"
-            onClick={onFindPlayers}
-          >
-            <Users className="w-6 h-6 text-primary" />
-            <span className="text-sm font-medium">Find Players</span>
-          </Button>
-          
-          <Button 
-            variant="neomorph" 
-            className="h-24 flex-col space-y-2"
-            onClick={onViewLeaderboard}
-          >
-            <TrendingUp className="w-6 h-6 text-accent" />
-            <span className="text-sm font-medium">Leaderboard</span>
-          </Button>
-          
-          <Button 
-            variant="neomorph" 
-            className="h-24 flex-col space-y-2"
-            onClick={onViewTournaments}
-          >
-            <Trophy className="w-6 h-6 text-warning" />
-            <span className="text-sm font-medium">Tournaments</span>
-          </Button>
-        </div>
+        <Button 
+          variant="neomorph" 
+          className="w-full h-20 flex items-center justify-center space-x-3 border-2 border-accent/20"
+          onClick={onStartMatch}
+        >
+          <Play className="w-6 h-6 text-accent" />
+          <span className="text-base font-medium">Start Match</span>
+        </Button>
       </div>
 
-      {/* Your Sports */}
-      <div className="px-6 py-4">
-        <h3 className="text-lg font-semibold mb-4">Your Sports</h3>
-        <div className="flex space-x-4 overflow-x-auto pb-2">
-          {['badminton', 'tennis', 'basketball', 'table-tennis'].map((sport) => (
-            <div key={sport} className="flex-shrink-0">
-              <SportIcon 
-                sport={sport as any} 
-                size="lg" 
-                className="cursor-pointer active:scale-95 transition-transform" 
-              />
-              <p className="text-xs text-center mt-2 capitalize font-medium">
-                {sport.replace('-', ' ')}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Performance Stats */}
       <div className="px-6 py-4">
@@ -136,41 +137,119 @@ export const IndividualDashboard = ({
         </div>
       </div>
 
-      {/* Live Matches */}
+      {/* Last Match */}
       <div className="px-6 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Live Matches</h3>
-          <Button variant="ghost" size="sm">See All</Button>
-        </div>
-        
+        <h3 className="text-lg font-semibold mb-4">Last Match</h3>
         <Card className="p-4 bg-gradient-card">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-success">LIVE</span>
-              <Badge variant="outline" className="text-xs">1ST SET</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">18:10</p>
+          <div className="flex items-center justify-between mb-2">
+            <Badge variant="outline" className="text-xs bg-success/20 text-success border-success/30">WON</Badge>
+            <p className="text-xs text-muted-foreground">2 days ago</p>
           </div>
-          
           <div className="flex items-center justify-between">
-            <div className="text-center">
-              <p className="font-semibold">You</p>
-              <p className="text-xs text-muted-foreground">Alice</p>
+            <div>
+              <p className="font-semibold">You vs John Smith</p>
+              <p className="text-sm text-muted-foreground">Badminton • Singles</p>
             </div>
-            
-            <div className="text-center bg-accent/10 border border-accent/20 rounded-xl px-4 py-2">
-              <p className="text-2xl font-bold text-accent">21:18</p>
-              <p className="text-xs text-muted-foreground">Current Score</p>
-            </div>
-            
-            <div className="text-center">
-              <p className="font-semibold">Opponent</p>
-              <p className="text-xs text-muted-foreground">John</p>
-            </div>
+            <p className="text-lg font-bold text-accent">21-18</p>
           </div>
         </Card>
       </div>
+
+      {/* Upcoming Match */}
+      <div className="px-6 py-4">
+        <h3 className="text-lg font-semibold mb-4">Upcoming Match</h3>
+        <Card className="p-4 bg-gradient-card border-2 border-accent/20">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-accent" />
+              <span className="text-sm font-medium">Tomorrow, 6:00 PM</span>
+            </div>
+          </div>
+          <p className="font-semibold mb-1">Alice vs Sarah Johnson</p>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <Trophy className="w-4 h-4" />
+            <span>Tennis • Quarter Finals</span>
+          </div>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-1">
+            <MapPin className="w-4 h-4" />
+            <span>City Sports Complex</span>
+          </div>
+        </Card>
+      </div>
+
+      {/* Upcoming Tournament */}
+      <div className="px-6 py-4">
+        <h3 className="text-lg font-semibold mb-4">Upcoming Tournament</h3>
+        <Card className="p-4 bg-gradient-card">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-warning" />
+              <span className="text-sm font-medium">Dec 15-17, 2025</span>
+            </div>
+            <Badge variant="outline" className="text-xs">Registered</Badge>
+          </div>
+          <p className="font-semibold mb-1">City Open Badminton Championship</p>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <MapPin className="w-4 h-4" />
+            <span>Municipal Sports Arena</span>
+          </div>
+        </Card>
+      </div>
+
+      {/* Add Sport Dialog */}
+      <Dialog open={showAddSportDialog} onOpenChange={setShowAddSportDialog}>
+        <DialogContent className="bg-card">
+          <DialogHeader>
+            <DialogTitle>Add Sports</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search sports..."
+                value={sportSearch}
+                onChange={(e) => setSportSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <div className="max-h-60 overflow-y-auto space-y-2">
+              {filteredAvailableSports.map((sport) => (
+                <div 
+                  key={sport} 
+                  className="flex items-center space-x-3 p-3 hover:bg-accent/10 rounded-md cursor-pointer"
+                  onClick={() => {
+                    setSelectedNewSports(prev => 
+                      prev.includes(sport) ? prev.filter(s => s !== sport) : [...prev, sport]
+                    );
+                  }}
+                >
+                  <Checkbox
+                    checked={selectedNewSports.includes(sport)}
+                    onCheckedChange={() => {
+                      setSelectedNewSports(prev => 
+                        prev.includes(sport) ? prev.filter(s => s !== sport) : [...prev, sport]
+                      );
+                    }}
+                  />
+                  <Label className="text-sm font-normal cursor-pointer flex-1 capitalize">
+                    {sport.replace('-', ' ')}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            
+            <Button 
+              className="w-full" 
+              onClick={handleAddSports}
+              disabled={selectedNewSports.length === 0}
+            >
+              Add Selected Sports
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <BottomNavigation 
         userType="individual"

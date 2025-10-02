@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { MobileContainer } from "@/components/ui/mobile-container";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, User, Trophy, Calendar as CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { ArrowLeft, User, Trophy, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IndividualProfileProps {
@@ -19,14 +16,25 @@ interface IndividualProfileProps {
 
 export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps) => {
   const [fullName, setFullName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState<Date>();
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [gender, setGender] = useState("");
   const [selectedSports, setSelectedSports] = useState<string[]>([]);
+  const [sportSearch, setSportSearch] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const sports = [
     "Badminton", "Tennis", "Table Tennis", "Basketball", "Cricket", 
-    "Football", "Volleyball", "Swimming", "Athletics", "Chess"
+    "Football", "Volleyball", "Swimming", "Athletics", "Chess",
+    "Hockey", "Golf", "Boxing", "Kabaddi", "Wrestling"
   ];
+
+  const filteredSports = useMemo(() => {
+    return sports.filter(sport => 
+      sport.toLowerCase().includes(sportSearch.toLowerCase())
+    );
+  }, [sportSearch]);
 
   const toggleSport = (sport: string) => {
     setSelectedSports(prev => 
@@ -37,7 +45,29 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
   };
 
   const isFormValid = () => {
-    return fullName && dateOfBirth && gender && selectedSports.length > 0;
+    if (!fullName || !day || !month || !year || !gender || selectedSports.length === 0) {
+      return false;
+    }
+    
+    // Validate date
+    const dayNum = parseInt(day);
+    const monthNum = parseInt(month);
+    const yearNum = parseInt(year);
+    
+    if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) return false;
+    if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12) return false;
+    
+    // Check if user is at least 8 years old
+    const birthDate = new Date(yearNum, monthNum - 1, dayNum);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (age < 8 || (age === 8 && monthDiff < 0) || (age === 8 && monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      return false;
+    }
+    
+    return true;
   };
 
   return (
@@ -76,30 +106,39 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
             </div>
 
             <div>
-              <Label>Date of Birth*</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dateOfBirth && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateOfBirth ? format(dateOfBirth, "PPP") : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateOfBirth}
-                    onSelect={setDateOfBirth}
-                    initialFocus
-                    className="pointer-events-auto"
+              <Label>Date of Birth* (Must be at least 8 years old)</Label>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <Input
+                    type="number"
+                    placeholder="DD"
+                    value={day}
+                    onChange={(e) => setDay(e.target.value)}
+                    min="1"
+                    max="31"
                   />
-                </PopoverContent>
-              </Popover>
+                </div>
+                <div>
+                  <Input
+                    type="number"
+                    placeholder="MM"
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                    min="1"
+                    max="12"
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="number"
+                    placeholder="YYYY"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    min="1900"
+                    max={new Date().getFullYear()}
+                  />
+                </div>
+              </div>
             </div>
 
             <div>
@@ -127,33 +166,88 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
           
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">Select all sports you play</p>
-            {sports.map((sport) => (
-              <div key={sport} className="flex items-center space-x-3">
-                <Checkbox
-                  id={sport}
-                  checked={selectedSports.includes(sport)}
-                  onCheckedChange={() => toggleSport(sport)}
+            
+            {/* Search and Dropdown */}
+            <div className="relative">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search sports..."
+                  value={sportSearch}
+                  onChange={(e) => setSportSearch(e.target.value)}
+                  onFocus={() => setIsDropdownOpen(true)}
+                  className="pl-10"
                 />
-                <Label
-                  htmlFor={sport}
-                  className="text-sm font-normal cursor-pointer"
-                >
-                  {sport}
-                </Label>
               </div>
-            ))}
+              
+              {isDropdownOpen && (
+                <div className="absolute z-50 w-full mt-2 max-h-60 overflow-y-auto bg-card border border-accent/20 rounded-md shadow-lg">
+                  {filteredSports.length > 0 ? (
+                    filteredSports.map((sport) => (
+                      <div 
+                        key={sport} 
+                        className="flex items-center space-x-3 p-3 hover:bg-accent/10 cursor-pointer"
+                        onClick={() => {
+                          toggleSport(sport);
+                          setSportSearch("");
+                        }}
+                      >
+                        <Checkbox
+                          id={`dropdown-${sport}`}
+                          checked={selectedSports.includes(sport)}
+                          onCheckedChange={() => toggleSport(sport)}
+                        />
+                        <Label
+                          htmlFor={`dropdown-${sport}`}
+                          className="text-sm font-normal cursor-pointer flex-1"
+                        >
+                          {sport}
+                        </Label>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 text-sm text-muted-foreground text-center">
+                      No sports found
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* Selected Sports Display */}
+            {selectedSports.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {selectedSports.map((sport) => (
+                  <div 
+                    key={sport} 
+                    className="bg-accent/20 text-accent px-3 py-1 rounded-full text-sm flex items-center space-x-2"
+                  >
+                    <span>{sport}</span>
+                    <button 
+                      onClick={() => toggleSport(sport)}
+                      className="hover:text-accent-foreground"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </Card>
 
         {/* Complete Button */}
         <Button 
           className="w-full bg-gradient-accent hover:bg-accent/90" 
-          onClick={() => onComplete({ 
-            fullName, 
-            dateOfBirth, 
-            gender, 
-            primarySports: selectedSports 
-          })}
+          onClick={() => {
+            const dateOfBirth = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            onComplete({ 
+              fullName, 
+              dateOfBirth, 
+              gender, 
+              primarySports: selectedSports 
+            });
+          }}
           disabled={!isFormValid()}
         >
           Complete Setup

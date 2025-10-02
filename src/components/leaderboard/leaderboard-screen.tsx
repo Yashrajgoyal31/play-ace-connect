@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MobileContainer } from "@/components/ui/mobile-container";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Trophy, Medal, Crown, Target, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Trophy, Medal, Crown, TrendingUp, User } from "lucide-react";
 
 interface LeaderboardScreenProps {
   onBack: () => void;
+  onViewProfile?: (playerId: string) => void;
 }
 
-export const LeaderboardScreen = ({ onBack }: LeaderboardScreenProps) => {
+export const LeaderboardScreen = ({ onBack, onViewProfile }: LeaderboardScreenProps) => {
   const [selectedScope, setSelectedScope] = useState("city");
   const [selectedSport, setSelectedSport] = useState("badminton");
 
@@ -91,7 +92,7 @@ export const LeaderboardScreen = ({ onBack }: LeaderboardScreenProps) => {
 
         {/* Your Rank Card */}
         <Card className="p-4 bg-gradient-accent/10 border-2 border-accent/20">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
                 <span className="text-sm font-bold text-accent-foreground">{getCurrentUserRank().rank}</span>
@@ -106,22 +107,23 @@ export const LeaderboardScreen = ({ onBack }: LeaderboardScreenProps) => {
               <p className="font-bold text-accent">{getCurrentUserRank().winRate}%</p>
             </div>
           </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+            onClick={() => onViewProfile?.('current-user')}
+          >
+            <User className="w-4 h-4 mr-2" />
+            View Your Profile & Stats
+          </Button>
         </Card>
 
-        {/* Leaderboard Tabs */}
-        <Tabs defaultValue="rankings" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-gradient-card border border-accent/20">
-            <TabsTrigger value="rankings" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              Rankings
-            </TabsTrigger>
-            <TabsTrigger value="stats" className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              Stats
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="rankings" className="space-y-4 mt-6">
-            {/* Top 3 Podium */}
-            <Card className="p-6 bg-gradient-card">
+        {/* Rankings Section */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">Rankings for {selectedSport}</h3>
+          
+          {/* Top 3 Podium */}
+          <Card className="p-6 bg-gradient-card">
               <div className="flex items-end justify-center space-x-4 mb-6">
                 {/* 2nd Place */}
                 <div className="text-center">
@@ -150,66 +152,33 @@ export const LeaderboardScreen = ({ onBack }: LeaderboardScreenProps) => {
                   <p className="text-xs text-muted-foreground">{leaderboardData[2].points} pts</p>
                 </div>
               </div>
-            </Card>
+          </Card>
 
-            {/* Full Rankings */}
-            <div className="space-y-3">
-              {leaderboardData.map((player, index) => (
-                <Card key={index} className="p-4 bg-gradient-card border border-accent/10 hover:border-accent/30 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      {getRankIcon(player.rank)}
-                      <div>
-                        <p className="font-semibold">{player.name}</p>
-                        <p className="text-sm text-muted-foreground">{player.city}, {player.state}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-accent">{player.points}</p>
-                      <p className="text-xs text-muted-foreground">{player.wins}W/{player.losses}L</p>
+          {/* Full Rankings */}
+          <div className="space-y-3">
+            {leaderboardData.map((player, index) => (
+              <Card 
+                key={index} 
+                className="p-4 bg-gradient-card border border-accent/10 hover:border-accent/30 transition-colors cursor-pointer"
+                onClick={() => onViewProfile?.(player.rank.toString())}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    {getRankIcon(player.rank)}
+                    <div>
+                      <p className="font-semibold">{player.name}</p>
+                      <p className="text-sm text-muted-foreground">{player.city}, {player.state}</p>
                     </div>
                   </div>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="stats" className="space-y-4 mt-6">
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="p-4 bg-gradient-card">
-                <div className="text-center">
-                  <Trophy className="w-8 h-8 text-accent mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-accent">12</p>
-                  <p className="text-sm text-muted-foreground">Tournament Wins</p>
+                  <div className="text-right">
+                    <p className="font-bold text-accent">{player.points}</p>
+                    <p className="text-xs text-muted-foreground">{player.wins}W/{player.losses}L</p>
+                  </div>
                 </div>
               </Card>
-              
-              <Card className="p-4 bg-gradient-card">
-                <div className="text-center">
-                  <Target className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <p className="text-2xl font-bold">76%</p>
-                  <p className="text-sm text-muted-foreground">Win Rate</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-gradient-card">
-                <div className="text-center">
-                  <TrendingUp className="w-8 h-8 text-success mx-auto mb-2" />
-                  <p className="text-2xl font-bold">+150</p>
-                  <p className="text-sm text-muted-foreground">Points This Week</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-gradient-card">
-                <div className="text-center">
-                  <Medal className="w-8 h-8 text-warning mx-auto mb-2" />
-                  <p className="text-2xl font-bold">5</p>
-                  <p className="text-sm text-muted-foreground">Streak</p>
-                </div>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+            ))}
+          </div>
+        </div>
       </div>
     </MobileContainer>
   );

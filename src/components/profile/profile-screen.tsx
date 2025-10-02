@@ -3,7 +3,8 @@ import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SportIcon } from "@/components/ui/sport-icon";
-import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon, Medal, TrendingUp } from "lucide-react";
 import { useState } from "react";
 
 interface ProfileScreenProps {
@@ -12,6 +13,13 @@ interface ProfileScreenProps {
 
 export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [selectedSport, setSelectedSport] = useState("badminton");
+  
+  const sportsStats = {
+    badminton: { matches: 28, wins: 22, losses: 6, winRate: 79, points: 847 },
+    tennis: { matches: 15, wins: 9, losses: 6, winRate: 60, points: 312 },
+    basketball: { matches: 4, wins: 2, losses: 2, winRate: 50, points: 88 }
+  };
   
   return (
     <MobileContainer className="pb-20">
@@ -60,28 +68,92 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
         </Card>
       </div>
 
-      {/* Stats Overview */}
+      {/* Stats by Sport */}
       <div className="px-6 py-4">
-        <h3 className="text-lg font-semibold mb-4">Performance Stats</h3>
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="p-4 text-center bg-gradient-card">
-            <Trophy className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">47</p>
-            <p className="text-xs text-muted-foreground">Matches Won</p>
-          </Card>
-          
-          <Card className="p-4 text-center bg-gradient-card">
-            <Target className="w-6 h-6 text-accent mx-auto mb-2" />
-            <p className="text-2xl font-bold">73%</p>
-            <p className="text-xs text-muted-foreground">Win Rate</p>
-          </Card>
-          
-          <Card className="p-4 text-center bg-gradient-card">
-            <Zap className="w-6 h-6 text-warning mx-auto mb-2" />
-            <p className="text-2xl font-bold">1,247</p>
-            <p className="text-xs text-muted-foreground">Total Points</p>
-          </Card>
-        </div>
+        <h3 className="text-lg font-semibold mb-4">Stats by Sport</h3>
+        
+        <Tabs defaultValue="badminton" onValueChange={setSelectedSport}>
+          <TabsList className="grid w-full grid-cols-3 bg-gradient-card border border-accent/20">
+            <TabsTrigger value="badminton">Badminton</TabsTrigger>
+            <TabsTrigger value="tennis">Tennis</TabsTrigger>
+            <TabsTrigger value="basketball">Basketball</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="badminton" className="mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 text-center bg-gradient-card">
+                <Trophy className="w-6 h-6 text-accent mx-auto mb-2" />
+                <p className="text-2xl font-bold text-accent">{sportsStats.badminton.wins}</p>
+                <p className="text-xs text-muted-foreground">Matches Won</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Target className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.badminton.winRate}%</p>
+                <p className="text-xs text-muted-foreground">Win Rate</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Medal className="w-6 h-6 text-warning mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.badminton.matches}</p>
+                <p className="text-xs text-muted-foreground">Total Matches</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Zap className="w-6 h-6 text-success mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.badminton.points}</p>
+                <p className="text-xs text-muted-foreground">Points</p>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="tennis" className="mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 text-center bg-gradient-card">
+                <Trophy className="w-6 h-6 text-accent mx-auto mb-2" />
+                <p className="text-2xl font-bold text-accent">{sportsStats.tennis.wins}</p>
+                <p className="text-xs text-muted-foreground">Matches Won</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Target className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.tennis.winRate}%</p>
+                <p className="text-xs text-muted-foreground">Win Rate</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Medal className="w-6 h-6 text-warning mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.tennis.matches}</p>
+                <p className="text-xs text-muted-foreground">Total Matches</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Zap className="w-6 h-6 text-success mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.tennis.points}</p>
+                <p className="text-xs text-muted-foreground">Points</p>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="basketball" className="mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 text-center bg-gradient-card">
+                <Trophy className="w-6 h-6 text-accent mx-auto mb-2" />
+                <p className="text-2xl font-bold text-accent">{sportsStats.basketball.wins}</p>
+                <p className="text-xs text-muted-foreground">Matches Won</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Target className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.basketball.winRate}%</p>
+                <p className="text-xs text-muted-foreground">Win Rate</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Medal className="w-6 h-6 text-warning mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.basketball.matches}</p>
+                <p className="text-xs text-muted-foreground">Total Matches</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Zap className="w-6 h-6 text-success mx-auto mb-2" />
+                <p className="text-2xl font-bold">{sportsStats.basketball.points}</p>
+                <p className="text-xs text-muted-foreground">Points</p>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Favorite Sports */}
