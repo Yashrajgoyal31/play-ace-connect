@@ -8,6 +8,7 @@ import { SportSelection } from '@/components/match/sport-selection';
 import { MatchSetup } from '@/components/match/match-setup';
 import { BadmintonScoring } from '@/components/scoring/badminton-scoring';
 import { ProfileScreen } from '@/components/profile/profile-screen';
+import { OrganizationProfileScreen } from '@/components/profile/organization-profile-screen';
 import { PlayersScreen } from '@/components/players/players-screen';
 import { LeaderboardScreen } from '@/components/leaderboard/leaderboard-screen';
 import { TournamentList } from '@/components/tournaments/tournament-list';
@@ -118,7 +119,12 @@ export const AppStateManager = () => {
         );
       
       case 'profile':
-        return (
+        return userType === 'organization' ? (
+          <OrganizationProfileScreen 
+            onBack={() => setCurrentState('home')}
+            organizerProfile={organizerProfile}
+          />
+        ) : (
           <ProfileScreen 
             onBack={() => setCurrentState('home')}
           />
@@ -172,6 +178,8 @@ export const AppStateManager = () => {
                 setSelectedTournamentId(tournamentId);
                 setCurrentState('tournament-detail');
               }}
+              userType={userType}
+              onRegisterOrganization={() => setCurrentState('organization-setup')}
             />
             <BottomNavigation 
               userType={userType}

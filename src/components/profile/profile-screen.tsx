@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SportIcon } from "@/components/ui/sport-icon";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon, Medal, TrendingUp } from "lucide-react";
+import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon, Medal, TrendingUp, Building2 } from "lucide-react";
 import { useState } from "react";
 
 interface ProfileScreenProps {
@@ -47,7 +47,11 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
 
       {/* Profile Header */}
       <div className="px-6 py-6">
-        <Card className="p-6 bg-gradient-card text-center">
+        <Card className="p-6 bg-gradient-card text-center relative">
+          <Button variant="ghost" size="icon" className="absolute top-2 right-2">
+            <Edit className="w-4 h-4" />
+          </Button>
+          
           <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-4 flex items-center justify-center">
             <span className="text-3xl font-bold text-primary-foreground">A</span>
           </div>
@@ -55,15 +59,20 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
           <h2 className="text-xl font-bold mb-2">Alice Johnson</h2>
           <p className="text-muted-foreground mb-4">@alice_athlete</p>
           
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <Badge variant="outline" className="bg-success/20 text-success border-none">
-              Active
-            </Badge>
-          </div>
+          {/* Organization Info */}
+          <Card className="p-3 bg-gradient-accent/10 border border-accent/20 mb-4 cursor-pointer hover:bg-gradient-accent/20 transition-all">
+            <div className="flex items-center justify-center space-x-2">
+              <Building2 className="w-4 h-4 text-accent" />
+              <div className="text-sm">
+                <p className="font-medium text-accent">Sports Academy</p>
+                <p className="text-xs text-muted-foreground">Phoenix Sports Club • Member</p>
+              </div>
+            </div>
+          </Card>
           
-          <Button variant="outline" size="sm">
-            <Edit className="w-4 h-4 mr-2" />
-            Edit Profile
+          {/* Switch Profile Option */}
+          <Button variant="outline" size="sm" className="w-full">
+            Switch to Organization Profile
           </Button>
         </Card>
       </div>
@@ -72,12 +81,38 @@ export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Stats by Sport</h3>
         
-        <Tabs defaultValue="badminton" onValueChange={setSelectedSport}>
-          <TabsList className="grid w-full grid-cols-3 bg-gradient-card border border-accent/20">
+        <Tabs defaultValue="all" onValueChange={setSelectedSport}>
+          <TabsList className="grid w-full grid-cols-4 bg-gradient-card border border-accent/20">
+            <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="badminton">Badminton</TabsTrigger>
             <TabsTrigger value="tennis">Tennis</TabsTrigger>
             <TabsTrigger value="basketball">Basketball</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="all" className="mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 text-center bg-gradient-card">
+                <Trophy className="w-6 h-6 text-accent mx-auto mb-2" />
+                <p className="text-2xl font-bold text-accent">33</p>
+                <p className="text-xs text-muted-foreground">Total Wins</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Target className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-2xl font-bold">70%</p>
+                <p className="text-xs text-muted-foreground">Avg Win Rate</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Medal className="w-6 h-6 text-warning mx-auto mb-2" />
+                <p className="text-2xl font-bold">47</p>
+                <p className="text-xs text-muted-foreground">Total Matches</p>
+              </Card>
+              <Card className="p-4 text-center bg-gradient-card">
+                <Zap className="w-6 h-6 text-success mx-auto mb-2" />
+                <p className="text-2xl font-bold">1247</p>
+                <p className="text-xs text-muted-foreground">Total Points</p>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="badminton" className="mt-4">
             <div className="grid grid-cols-2 gap-4">

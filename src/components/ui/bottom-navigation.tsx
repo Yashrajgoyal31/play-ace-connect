@@ -3,12 +3,11 @@ import { Trophy, TrendingUp, MapPin, Users, Target, Home } from "lucide-react";
 
 interface BottomNavigationProps {
   userType: 'organization' | 'individual';
-  currentSection?: 'home' | 'tournaments' | 'rankings' | 'players' | 'venues' | 'stats';
+  currentSection?: 'home' | 'tournaments' | 'rankings' | 'players' | 'stats';
   onNavigateHome: () => void;
   onNavigateTournaments: () => void;
   onNavigateRankings?: () => void;
   onNavigatePlayers?: () => void;
-  onNavigateVenues?: () => void;
   onNavigateStats?: () => void;
 }
 
@@ -19,7 +18,6 @@ export const BottomNavigation = ({
   onNavigateTournaments,
   onNavigateRankings,
   onNavigatePlayers,
-  onNavigateVenues,
   onNavigateStats
 }: BottomNavigationProps) => {
   const isActive = (section: string) => currentSection === section;
@@ -66,11 +64,11 @@ export const BottomNavigation = ({
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`flex-col space-y-1 ${isActive('venues') ? 'text-accent' : ''}`}
-              onClick={onNavigateVenues}
+              className={`flex-col space-y-1 ${isActive('players') ? 'text-accent' : ''}`}
+              onClick={onNavigatePlayers}
             >
-              <MapPin className={`w-5 h-5 ${isActive('venues') ? 'text-accent' : ''}`} />
-              <span className="text-xs">Venues</span>
+              <Users className={`w-5 h-5 ${isActive('players') ? 'text-accent' : ''}`} />
+              <span className="text-xs">Find Players</span>
             </Button>
           </>
         ) : (

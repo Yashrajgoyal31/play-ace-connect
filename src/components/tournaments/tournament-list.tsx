@@ -10,6 +10,8 @@ interface TournamentListProps {
   onCreateTournament: () => void;
   onJoinTournament: (tournamentId: string) => void;
   onViewTournament: (tournamentId: string) => void;
+  userType?: 'organization' | 'individual';
+  onRegisterOrganization?: () => void;
 }
 
 const mockTournaments = [
@@ -63,7 +65,16 @@ const mockTournaments = [
   }
 ];
 
-export const TournamentList = ({ onBack, onCreateTournament, onJoinTournament, onViewTournament }: TournamentListProps) => {
+export const TournamentList = ({ onBack, onCreateTournament, onJoinTournament, onViewTournament, userType = 'individual', onRegisterOrganization }: TournamentListProps) => {
+  const handleCreateClick = () => {
+    if (userType === 'individual') {
+      if (onRegisterOrganization) {
+        onRegisterOrganization();
+      }
+    } else {
+      onCreateTournament();
+    }
+  };
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "registration":
@@ -91,7 +102,7 @@ export const TournamentList = ({ onBack, onCreateTournament, onJoinTournament, o
         <Button 
           variant="neomorph" 
           size="icon"
-          onClick={onCreateTournament}
+          onClick={handleCreateClick}
           className="bg-gradient-primary text-primary-foreground"
         >
           <Plus className="w-5 h-5" />

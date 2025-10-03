@@ -66,30 +66,32 @@ export const IndividualDashboard = ({
             </div>
           </div>
           
-          <Button variant="ghost" size="icon" onClick={onStartMatch}>
-            <Plus className="w-5 h-5 text-accent" />
-          </Button>
         </div>
         
         {/* Your Sports - Moved here */}
-        <div className="flex items-center space-x-3 overflow-x-auto pb-2">
-          {activeSports.map((sport) => (
-            <div key={sport} className="flex-shrink-0">
-              <SportIcon 
-                sport={sport as any} 
-                size="lg" 
-                className="cursor-pointer active:scale-95 transition-transform w-12 h-12" 
-              />
-            </div>
-          ))}
-          <Button 
-            variant="outline" 
-            size="icon"
-            className="flex-shrink-0 w-12 h-12 rounded-full"
-            onClick={() => setShowAddSportDialog(true)}
-          >
-            <Plus className="w-5 h-5" />
-          </Button>
+        <div className="space-y-2">
+          <div className="flex items-center space-x-3 overflow-x-auto pb-2">
+            {activeSports.map((sport) => (
+              <div key={sport} className="flex-shrink-0">
+                <SportIcon 
+                  sport={sport as any} 
+                  size="lg" 
+                  className="cursor-pointer active:scale-95 transition-transform w-12 h-12" 
+                />
+              </div>
+            ))}
+            <Button 
+              variant="outline" 
+              size="icon"
+              className="flex-shrink-0 w-12 h-12 rounded-full"
+              onClick={() => setShowAddSportDialog(true)}
+            >
+              <Plus className="w-5 h-5" />
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground text-center">
+            Click on sports icon to start scoring for the given sport
+          </p>
         </div>
       </div>
 
@@ -107,32 +109,26 @@ export const IndividualDashboard = ({
       </div>
 
 
-      {/* Performance Stats */}
+      {/* Overall Performance - All Sports Combined */}
       <div className="px-6 py-4">
-        <h3 className="text-lg font-semibold mb-4">Your Performance</h3>
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="p-4 bg-gradient-accent/10 border border-accent/20">
-            <div className="text-center">
-              <Medal className="w-6 h-6 text-accent mx-auto mb-2" />
-              <p className="text-2xl font-bold text-accent">12</p>
-              <p className="text-xs text-muted-foreground">Matches Won</p>
-            </div>
+        <h3 className="text-lg font-semibold mb-4">Overall Performance</h3>
+        <div className="grid grid-cols-3 gap-3">
+          <Card className="p-3 bg-gradient-accent/10 border border-accent/20 aspect-square flex flex-col items-center justify-center">
+            <Trophy className="w-5 h-5 text-accent mb-1" />
+            <p className="text-xl font-bold text-accent">33</p>
+            <p className="text-[10px] text-muted-foreground text-center">Matches Won</p>
           </Card>
           
-          <Card className="p-4 bg-gradient-card">
-            <div className="text-center">
-              <Target className="w-6 h-6 text-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold">85%</p>
-              <p className="text-xs text-muted-foreground">Win Rate</p>
-            </div>
+          <Card className="p-3 bg-gradient-card aspect-square flex flex-col items-center justify-center">
+            <Target className="w-5 h-5 text-primary mb-1" />
+            <p className="text-xl font-bold">72%</p>
+            <p className="text-[10px] text-muted-foreground text-center">Win Rate</p>
           </Card>
           
-          <Card className="p-4 bg-gradient-card">
-            <div className="text-center">
-              <Trophy className="w-6 h-6 text-warning mx-auto mb-2" />
-              <p className="text-2xl font-bold">3</p>
-              <p className="text-xs text-muted-foreground">Tournaments</p>
-            </div>
+          <Card className="p-3 bg-gradient-card aspect-square flex flex-col items-center justify-center">
+            <Medal className="w-5 h-5 text-warning mb-1" />
+            <p className="text-xl font-bold">12</p>
+            <p className="text-[10px] text-muted-foreground text-center">Tournaments</p>
           </Card>
         </div>
       </div>
@@ -198,7 +194,7 @@ export const IndividualDashboard = ({
 
       {/* Add Sport Dialog */}
       <Dialog open={showAddSportDialog} onOpenChange={setShowAddSportDialog}>
-        <DialogContent className="bg-card">
+        <DialogContent className="mx-4 max-w-[calc(100%-2rem)] rounded-lg bg-card">
           <DialogHeader>
             <DialogTitle>Add Sports</DialogTitle>
           </DialogHeader>
@@ -257,7 +253,7 @@ export const IndividualDashboard = ({
         onNavigateHome={() => {}}
         onNavigateTournaments={onViewTournaments || (() => {})}
         onNavigateRankings={onViewLeaderboard}
-        onNavigateVenues={() => {}}
+        onNavigatePlayers={onFindPlayers}
       />
     </MobileContainer>
   );

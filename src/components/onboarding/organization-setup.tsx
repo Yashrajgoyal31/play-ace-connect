@@ -13,9 +13,9 @@ export const OrganizationSetup = ({ onComplete }: OrganizationSetupProps) => {
 
   const organizationTypes = [
     {
-      id: 'school',
-      name: 'School',
-      description: 'Educational institution with students',
+      id: 'educational',
+      name: 'Educational Institutions',
+      description: 'Schools, colleges, and universities',
       icon: GraduationCap,
       features: ['Roll numbers', 'Age categories (U-14, U-16, etc.)', 'Class-wise tournaments']
     },
@@ -39,6 +39,13 @@ export const OrganizationSetup = ({ onComplete }: OrganizationSetupProps) => {
       description: 'Company sports activities',
       icon: Building2,
       features: ['Employee tournaments', 'Department-wise teams', 'Office leagues']
+    },
+    {
+      id: 'others',
+      name: 'Others',
+      description: 'Other types of organizations',
+      icon: Building2,
+      features: ['Custom setup', 'Flexible configuration', 'General sports activities']
     }
   ];
 

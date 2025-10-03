@@ -68,7 +68,7 @@ All colors MUST be HSL for consistency.
     --radius: 1.5rem; /* Rounded corners for neumorphic feel */
     --font-family: 'Inter', system-ui, sans-serif;
     
-    /* Gradient Definitions - Enhanced Purple */
+    /* Gradient Definitions - Enhanced Purple & Orange Balance */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-light)) 100%);
     --gradient-purple: linear-gradient(135deg, hsl(var(--purple-primary)) 0%, hsl(var(--purple-secondary)) 100%);

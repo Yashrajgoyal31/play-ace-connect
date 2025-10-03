@@ -61,17 +61,18 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
 
   const getOrganizationTypeLabel = () => {
     switch (organizationType) {
-      case 'school': return 'School';
+      case 'educational': return 'Educational Institution';
       case 'academy': return 'Sports Academy';
       case 'club': return 'Sports Club';
       case 'corporate': return 'Corporate';
+      case 'others': return 'Organization';
       default: return 'Organization';
     }
   };
 
   const renderOrganizationSpecificFields = () => {
     switch (organizationType) {
-      case 'school':
+      case 'educational':
         return (
           <div className="space-y-4">
             <div>
@@ -93,12 +94,12 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
               />
             </div>
             <div>
-              <Label htmlFor="licenseNumber">School License/Registration Number</Label>
+              <Label htmlFor="licenseNumber">Institution License/Registration Number</Label>
               <Input
                 id="licenseNumber"
                 value={profileData.licenseNumber}
                 onChange={(e) => setProfileData({ ...profileData, licenseNumber: e.target.value })}
-                placeholder="School registration number"
+                placeholder="Institution registration number"
               />
             </div>
           </div>
@@ -177,6 +178,21 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
           </div>
         );
 
+      case 'others':
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="licenseNumber">Registration/License Number (if any)</Label>
+              <Input
+                id="licenseNumber"
+                value={profileData.licenseNumber}
+                onChange={(e) => setProfileData({ ...profileData, licenseNumber: e.target.value })}
+                placeholder="Organization registration number"
+              />
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -190,7 +206,7 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
                       profileData.address &&
                       profileData.sportsOffered.length > 0;
 
-    const orgSpecificValid = organizationType === 'school' 
+    const orgSpecificValid = organizationType === 'educational' 
       ? profileData.principalName 
       : true;
 
@@ -459,10 +475,10 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
             </div>
 
             <div>
-              <Label>Certificates & Registration Documents</Label>
+              <Label>Certificate of Incorporation</Label>
               <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
                 <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground mb-2">Upload registration certificates</p>
+                <p className="text-sm text-muted-foreground mb-2">Upload Certificate of Incorporation</p>
                 <input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
