@@ -657,7 +657,7 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
       </div>
 
       {/* Navigation */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-card-elevated/95 backdrop-blur-md border-t border-border/50 p-4">
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-card-elevated/95 backdrop-blur-md border-t border-border/50 p-4">
         <div className="flex space-x-3">
           {currentStep > 1 && (
             <Button variant="outline" onClick={handlePrevious} className="flex-1">
