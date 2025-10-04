@@ -13,9 +13,10 @@ import { useState } from "react";
 interface OrganizationProfileScreenProps {
   onBack: () => void;
   organizerProfile?: any;
+  onSwitchToIndividual?: () => void;
 }
 
-export const OrganizationProfileScreen = ({ onBack, organizerProfile }: OrganizationProfileScreenProps) => {
+export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchToIndividual }: OrganizationProfileScreenProps) => {
   const [showRolesDialog, setShowRolesDialog] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("member");

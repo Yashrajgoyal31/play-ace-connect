@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
 import { WelcomeScreen } from '@/components/onboarding/welcome-screen';
 import { OrganizationSetup } from '@/components/onboarding/organization-setup';
 import { IndividualProfile } from '@/components/onboarding/individual-profile';
@@ -18,10 +19,16 @@ import { TournamentVerification } from '@/components/tournaments/tournament-veri
 import { TournamentPromotion } from '@/components/tournaments/tournament-promotion';
 import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
+import { SearchScreen } from '@/components/search/search-screen';
 
-type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion';
+type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'organization-profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion' | 'search';
 
-export const AppStateManager = () => {
+interface AppStateManagerProps {
+  user: User;
+  session: Session | null;
+}
+
+export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
   const [currentState, setCurrentState] = useState<AppState>('welcome');
   const [selectedSport, setSelectedSport] = useState<string>('');
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
@@ -30,6 +37,7 @@ export const AppStateManager = () => {
   const [individualProfile, setIndividualProfile] = useState<any>(null);
   const [currentTournamentData, setCurrentTournamentData] = useState<any>(null);
   const [userType, setUserType] = useState<'organization' | 'individual'>('individual');
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   const renderCurrentScreen = () => {
     switch (currentState) {
@@ -119,14 +127,23 @@ export const AppStateManager = () => {
         );
       
       case 'profile':
-        return userType === 'organization' ? (
+        return (
+          <ProfileScreen 
+            onBack={() => setCurrentState('home')}
+            onSwitchToOrganization={(orgId) => {
+              setSelectedProfileId(orgId);
+              setCurrentState('organization-profile');
+            }}
+            userId={user.id}
+          />
+        );
+
+      case 'organization-profile':
+        return (
           <OrganizationProfileScreen 
             onBack={() => setCurrentState('home')}
             organizerProfile={organizerProfile}
-          />
-        ) : (
-          <ProfileScreen 
-            onBack={() => setCurrentState('home')}
+            onSwitchToIndividual={() => setCurrentState('profile')}
           />
         );
       
@@ -134,6 +151,14 @@ export const AppStateManager = () => {
         return (
           <PlayersScreen 
             onBack={() => setCurrentState('home')}
+          />
+        );
+
+      case 'search':
+        return (
+          <SearchScreen 
+            onBack={() => setCurrentState('home')}
+            userType={userType}
           />
         );
 

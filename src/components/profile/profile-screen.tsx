@@ -9,9 +9,11 @@ import { useState } from "react";
 
 interface ProfileScreenProps {
   onBack: () => void;
+  onSwitchToOrganization?: (orgId: string) => void;
+  userId?: string;
 }
 
-export const ProfileScreen = ({ onBack }: ProfileScreenProps) => {
+export const ProfileScreen = ({ onBack, onSwitchToOrganization, userId }: ProfileScreenProps) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedSport, setSelectedSport] = useState("badminton");
   

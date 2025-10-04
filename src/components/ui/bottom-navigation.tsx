@@ -76,21 +76,21 @@ export const BottomNavigation = ({
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`flex-col space-y-1 ${isActive('players') ? 'text-accent' : ''}`}
-              onClick={onNavigatePlayers}
+              className={`flex-col space-y-1 ${isActive('rankings') ? 'text-accent' : ''}`}
+              onClick={onNavigateRankings}
             >
-              <Users className={`w-5 h-5 ${isActive('players') ? 'text-accent' : ''}`} />
-              <span className="text-xs">Players</span>
+              <TrendingUp className={`w-5 h-5 ${isActive('rankings') ? 'text-accent' : ''}`} />
+              <span className="text-xs">Rankings</span>
             </Button>
             
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`flex-col space-y-1 ${isActive('stats') ? 'text-accent' : ''}`}
-              onClick={onNavigateStats}
+              className={`flex-col space-y-1 ${isActive('players') ? 'text-accent' : ''}`}
+              onClick={onNavigatePlayers}
             >
-              <Target className={`w-5 h-5 ${isActive('stats') ? 'text-accent' : ''}`} />
-              <span className="text-xs">Stats</span>
+              <Users className={`w-5 h-5 ${isActive('players') ? 'text-accent' : ''}`} />
+              <span className="text-xs">Players</span>
             </Button>
           </>
         )}

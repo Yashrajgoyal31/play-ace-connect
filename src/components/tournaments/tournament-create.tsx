@@ -49,7 +49,8 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
 
   const [currentStep, setCurrentStep] = useState(1);
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
-  const totalSteps = 5;
+  const [tournamentLogo, setTournamentLogo] = useState<string>("");
+  const totalSteps = 3;
 
   const sports = [
     { id: "badminton", name: "Badminton" },
@@ -76,11 +77,16 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
     }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    // Auto-generate QR code
+    await generateQRCode();
+    
     const tournamentData = {
       ...formData,
+      logoUrl: tournamentLogo,
       promotional: {
-        ...formData.promotional,
+        generateCreative: true,
+        generateQR: true,
         qrData: qrCodeUrl
       }
     };
@@ -226,11 +232,11 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
               </div>
 
               <div>
-                <Label htmlFor="location">Location*</Label>
+                <Label htmlFor="address">Address*</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="location"
+                    id="address"
                     placeholder="Sports Complex, City"
                     className="pl-10"
                     value={formData.location}
@@ -274,11 +280,20 @@ export const TournamentCreate = ({ onBack, onCreateTournament }: TournamentCreat
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-bold mb-2">Fees & Prizes</h2>
-              <p className="text-muted-foreground mb-6">Set entry fees and prize distribution</p>
+              <h2 className="text-xl font-bold mb-2">Fees, Prizes & Logo</h2>
+              <p className="text-muted-foreground mb-6">Set entry fees, prizes, and upload logo</p>
             </div>
 
             <div className="space-y-4">
+              <div>
+                <Label>Tournament Logo (Optional)</Label>
+                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors">
+                  <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">Upload Tournament Logo</p>
+                  <p className="text-xs text-muted-foreground mt-1">PNG, JPG (Max 2MB)</p>
+                </div>
+              </div>
+
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Entry Fee</Label>
