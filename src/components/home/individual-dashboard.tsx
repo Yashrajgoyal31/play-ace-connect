@@ -95,20 +95,6 @@ export const IndividualDashboard = ({
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="px-6 py-4">
-        <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-        <Button 
-          variant="neomorph" 
-          className="w-full h-20 flex items-center justify-center space-x-3 border-2 border-accent/20"
-          onClick={onStartMatch}
-        >
-          <Play className="w-6 h-6 text-accent" />
-          <span className="text-base font-medium">Start Match</span>
-        </Button>
-      </div>
-
-
       {/* Overall Performance - All Sports Combined */}
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Overall Performance</h3>
