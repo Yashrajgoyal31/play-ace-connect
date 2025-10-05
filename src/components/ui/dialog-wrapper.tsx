@@ -12,7 +12,7 @@ interface DialogWrapperProps {
 export const DialogWrapper = ({ open, onOpenChange, title, description, children }: DialogWrapperProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="mx-4 max-w-[calc(100%-2rem)] rounded-lg">
+      <DialogContent className="mx-4 max-w-[calc(100%-2rem)] rounded-lg left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

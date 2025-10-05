@@ -43,30 +43,84 @@ export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchTo
             <Edit className="w-4 h-4" />
           </Button>
           
+          {onSwitchToIndividual && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="absolute top-2 left-2 text-xs"
+              onClick={onSwitchToIndividual}
+            >
+              Switch to Personal
+            </Button>
+          )}
+          
           <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-4 flex items-center justify-center">
             <Trophy className="w-12 h-12 text-primary-foreground" />
           </div>
           
           <h2 className="text-xl font-bold mb-2">{organizerProfile?.organizationName || 'Phoenix Sports Club'}</h2>
-          <Badge variant="outline" className="bg-accent/20 text-accent border-accent/30 mb-4">
+          <Badge variant="outline" className="bg-accent/20 text-accent border-accent/30 mb-2">
             {organizerProfile?.organizationType || 'Sports Academy'}
           </Badge>
+          
+          {organizerProfile?.establishedYear && (
+            <p className="text-xs text-muted-foreground mb-2">
+              <Calendar className="w-3 h-3 inline mr-1" />
+              Established {organizerProfile.establishedYear}
+            </p>
+          )}
           
           <p className="text-sm text-muted-foreground mb-4">
             {organizerProfile?.description || 'Premier sports training facility'}
           </p>
+          
+          {organizerProfile?.totalMembers && (
+            <div className="flex items-center justify-center space-x-1 text-sm">
+              <Users className="w-4 h-4 text-accent" />
+              <span>{organizerProfile.totalMembers} members</span>
+            </div>
+          )}
         </Card>
       </div>
+
+      {/* Sports Offered */}
+      {organizerProfile?.sportsOffered && organizerProfile.sportsOffered.length > 0 && (
+        <div className="px-6 py-4">
+          <h3 className="text-lg font-semibold mb-4">Sports Offered</h3>
+          <div className="flex flex-wrap gap-2">
+            {organizerProfile.sportsOffered.map((sport: string) => (
+              <Badge key={sport} variant="outline" className="bg-gradient-accent/10 text-accent border-accent/30">
+                <Trophy className="w-3 h-3 mr-1" />
+                {sport}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Contact Information */}
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
         <Card className="p-4 bg-gradient-card space-y-3">
+          {organizerProfile?.contactPerson && (
+            <div className="flex items-center space-x-3">
+              <Users className="w-5 h-5 text-accent" />
+              <div>
+                <p className="text-sm font-medium">Contact Person</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.contactPerson}</p>
+              </div>
+            </div>
+          )}
           <div className="flex items-center space-x-3">
             <MapPin className="w-5 h-5 text-accent" />
             <div>
               <p className="text-sm font-medium">Address</p>
-              <p className="text-xs text-muted-foreground">{organizerProfile?.address || '123 Sports Complex, City'}</p>
+              <p className="text-xs text-muted-foreground">
+                {organizerProfile?.address || '123 Sports Complex'}
+                {organizerProfile?.city && `, ${organizerProfile.city}`}
+                {organizerProfile?.state && `, ${organizerProfile.state}`}
+                {organizerProfile?.pincode && ` - ${organizerProfile.pincode}`}
+              </p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
@@ -94,6 +148,45 @@ export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchTo
           )}
         </Card>
       </div>
+      
+      {/* Organization Details */}
+      {(organizerProfile?.affiliatedTo || organizerProfile?.licenseNumber || organizerProfile?.achievements) && (
+        <div className="px-6 py-4">
+          <h3 className="text-lg font-semibold mb-4">Organization Details</h3>
+          <Card className="p-4 bg-gradient-card space-y-3">
+            {organizerProfile?.affiliatedTo && (
+              <div>
+                <p className="text-sm font-medium">Affiliated To</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.affiliatedTo}</p>
+              </div>
+            )}
+            {organizerProfile?.licenseNumber && (
+              <div>
+                <p className="text-sm font-medium">License/Registration Number</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.licenseNumber}</p>
+              </div>
+            )}
+            {organizerProfile?.principalName && (
+              <div>
+                <p className="text-sm font-medium">Principal/Head</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.principalName}</p>
+              </div>
+            )}
+            {organizerProfile?.coachingStaff && (
+              <div>
+                <p className="text-sm font-medium">Coaching Staff</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.coachingStaff} coaches</p>
+              </div>
+            )}
+            {organizerProfile?.achievements && (
+              <div>
+                <p className="text-sm font-medium">Achievements</p>
+                <p className="text-xs text-muted-foreground">{organizerProfile.achievements}</p>
+              </div>
+            )}
+          </Card>
+        </div>
+      )}
 
       {/* Roles & Access Management */}
       <div className="px-6 py-4">
