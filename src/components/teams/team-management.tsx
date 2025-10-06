@@ -162,15 +162,19 @@ export const TeamManagement = ({ onBack }: TeamManagementProps) => {
         open={showAddPlayer}
         onOpenChange={setShowAddPlayer}
         title="Add Player to Team"
-        description="Select a player to add to this team"
+        description="Add a player by their phone number"
       >
         <div className="space-y-4">
           <div>
-            <Label htmlFor="playerSearch">Search Player</Label>
+            <Label htmlFor="playerPhone">Player Phone Number</Label>
             <Input
-              id="playerSearch"
-              placeholder="Search by name or email"
+              id="playerPhone"
+              type="tel"
+              placeholder="Enter phone number"
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Player will be added if they're registered with this number
+            </p>
           </div>
           
           <div className="max-h-60 overflow-y-auto space-y-2">

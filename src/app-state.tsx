@@ -12,6 +12,7 @@ import { ProfileScreen } from '@/components/profile/profile-screen';
 import { OrganizationProfileScreen } from '@/components/profile/organization-profile-screen';
 import { PlayersScreen } from '@/components/players/players-screen';
 import { LeaderboardScreen } from '@/components/leaderboard/leaderboard-screen';
+import { OrganizationLeaderboard } from '@/components/leaderboard/organization-leaderboard';
 import { TournamentList } from '@/components/tournaments/tournament-list';
 import { TournamentCreate } from '@/components/tournaments/tournament-create';
 import { TournamentDetail } from '@/components/tournaments/tournament-detail';
@@ -20,6 +21,7 @@ import { TournamentPromotion } from '@/components/tournaments/tournament-promoti
 import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { SearchScreen } from '@/components/search/search-screen';
+import { InvitationDialog } from '@/components/invitations/invitation-dialog';
 
 type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'organization-profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion' | 'search';
 
@@ -163,7 +165,12 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
         );
 
       case 'leaderboard':
-        return (
+        return userType === 'organization' ? (
+          <OrganizationLeaderboard 
+            onBack={() => setCurrentState('home')}
+            organizationType={organizerProfile?.organizationType}
+          />
+        ) : (
           <LeaderboardScreen 
             onBack={() => setCurrentState('home')}
             onViewProfile={(playerId) => setCurrentState('profile')}
@@ -328,5 +335,10 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
     }
   };
 
-  return renderCurrentScreen();
+  return (
+    <>
+      <InvitationDialog />
+      {renderCurrentScreen()}
+    </>
+  );
 };
