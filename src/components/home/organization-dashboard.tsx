@@ -191,14 +191,6 @@ export const OrganizationDashboard = ({
         </Card>
       </div>
 
-      <BottomNavigation 
-        userType="organization"
-        currentSection="home"
-        onNavigateHome={() => {}}
-        onNavigateTournaments={onViewTournaments || (() => {})}
-        onNavigatePlayers={() => {}}
-        onNavigateStats={() => {}}
-      />
     </MobileContainer>
   );
 };

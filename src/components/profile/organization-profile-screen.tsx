@@ -17,6 +17,7 @@ interface OrganizationProfileScreenProps {
   organizerProfile?: any;
   onSwitchToIndividual?: () => void;
   organizationId?: string;
+  onManageTeams?: () => void;
 }
 
 type UserRole = {
@@ -31,7 +32,7 @@ type UserRole = {
   };
 };
 
-export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchToIndividual, organizationId }: OrganizationProfileScreenProps) => {
+export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchToIndividual, organizationId, onManageTeams }: OrganizationProfileScreenProps) => {
   const [showRolesDialog, setShowRolesDialog] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState<'owner' | 'admin' | 'member' | 'scorer'>("member");

@@ -22,8 +22,9 @@ import { OrganizerProfile } from '@/components/onboarding/organizer-profile';
 import { BottomNavigation } from '@/components/ui/bottom-navigation';
 import { SearchScreen } from '@/components/search/search-screen';
 import { InvitationDialog } from '@/components/invitations/invitation-dialog';
+import { TeamManagement } from '@/components/teams/team-management';
 
-type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'organization-profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion' | 'search';
+type AppState = 'welcome' | 'organization-setup' | 'organizer-profile' | 'individual-profile' | 'home' | 'sport-selection' | 'match-setup' | 'scoring' | 'profile' | 'organization-profile' | 'players' | 'leaderboard' | 'tournaments' | 'tournament-create' | 'tournament-detail' | 'tournament-verification' | 'tournament-promotion' | 'search' | 'teams';
 
 interface AppStateManagerProps {
   user: User;
@@ -92,20 +93,40 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
       
       case 'home':
         return userType === 'organization' ? (
-          <OrganizationDashboard 
-            onStartMatch={() => setCurrentState('sport-selection')}
-            onViewProfile={() => setCurrentState('profile')}
-            onViewTournaments={() => setCurrentState('tournaments')}
-            organizerProfile={organizerProfile}
-          />
+          <>
+            <OrganizationDashboard 
+              onStartMatch={() => setCurrentState('sport-selection')}
+              onViewProfile={() => setCurrentState('organization-profile')}
+              onViewTournaments={() => setCurrentState('tournaments')}
+              organizerProfile={organizerProfile}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="home"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigateStats={() => setCurrentState('search')}
+            />
+          </>
         ) : (
-          <IndividualDashboard 
-            onStartMatch={() => setCurrentState('sport-selection')}
-            onFindPlayers={() => setCurrentState('players')}
-            onViewProfile={() => setCurrentState('profile')}
-            onViewTournaments={() => setCurrentState('tournaments')}
-            onViewLeaderboard={() => setCurrentState('leaderboard')}
-          />
+          <>
+            <IndividualDashboard 
+              onStartMatch={() => setCurrentState('sport-selection')}
+              onFindPlayers={() => setCurrentState('players')}
+              onViewProfile={() => setCurrentState('profile')}
+              onViewTournaments={() => setCurrentState('tournaments')}
+              onViewLeaderboard={() => setCurrentState('leaderboard')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="home"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('search')}
+            />
+          </>
         );
       
       case 'sport-selection':
@@ -142,11 +163,22 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
 
       case 'organization-profile':
         return (
-          <OrganizationProfileScreen 
-            onBack={() => setCurrentState('home')}
-            organizerProfile={organizerProfile}
-            onSwitchToIndividual={() => setCurrentState('profile')}
-          />
+          <>
+            <OrganizationProfileScreen 
+              onBack={() => setCurrentState('home')}
+              organizerProfile={organizerProfile}
+              onSwitchToIndividual={() => setCurrentState('profile')}
+              onManageTeams={() => setCurrentState('teams')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="home"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigateStats={() => setCurrentState('search')}
+            />
+          </>
         );
       
       case 'players':
@@ -158,23 +190,71 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
 
       case 'search':
         return (
-          <SearchScreen 
-            onBack={() => setCurrentState('home')}
-            userType={userType}
-          />
+          <>
+            <SearchScreen 
+              onBack={() => setCurrentState('home')}
+              userType={userType}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection={userType === 'organization' ? 'stats' : 'players'}
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('search')}
+              onNavigateStats={() => setCurrentState('search')}
+            />
+          </>
+        );
+
+      case 'teams':
+        return (
+          <>
+            <TeamManagement 
+              onBack={() => setCurrentState('organization-profile')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="home"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigateStats={() => setCurrentState('search')}
+            />
+          </>
         );
 
       case 'leaderboard':
         return userType === 'organization' ? (
-          <OrganizationLeaderboard 
-            onBack={() => setCurrentState('home')}
-            organizationType={organizerProfile?.organizationType}
-          />
+          <>
+            <OrganizationLeaderboard 
+              onBack={() => setCurrentState('home')}
+              organizationType={organizerProfile?.organizationType}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="rankings"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigateStats={() => setCurrentState('search')}
+            />
+          </>
         ) : (
-          <LeaderboardScreen 
-            onBack={() => setCurrentState('home')}
-            onViewProfile={(playerId) => setCurrentState('profile')}
-          />
+          <>
+            <LeaderboardScreen 
+              onBack={() => setCurrentState('home')}
+              onViewProfile={(playerId) => setCurrentState('profile')}
+            />
+            <BottomNavigation 
+              userType={userType}
+              currentSection="rankings"
+              onNavigateHome={() => setCurrentState('home')}
+              onNavigateTournaments={() => setCurrentState('tournaments')}
+              onNavigateRankings={() => setCurrentState('leaderboard')}
+              onNavigatePlayers={() => setCurrentState('search')}
+            />
+          </>
         );
       
       case 'scoring':
