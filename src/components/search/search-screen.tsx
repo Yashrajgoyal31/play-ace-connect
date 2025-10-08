@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { MobileContainer } from "@/components/ui/mobile-container";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, ArrowLeft, MapPin, Calendar, Trophy, Users, Building2 } from "lucide-react";
+import { ArrowLeft, Search, QrCode, Mic, Clock, MapPin, Trophy, Users, Target } from "lucide-react";
+import { PlayersScreen } from "@/components/players/players-screen";
 
 interface SearchScreenProps {
   onBack: () => void;
@@ -14,188 +12,110 @@ interface SearchScreenProps {
 
 export const SearchScreen = ({ onBack, userType }: SearchScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Mock data for demonstration
-  const mockPlayers = [
-    { id: 1, name: "John Smith", sport: "Badminton", rank: 15, winRate: 75 },
-    { id: 2, name: "Sarah Johnson", sport: "Tennis", rank: 8, winRate: 82 },
-    { id: 3, name: "Mike Chen", sport: "Basketball", rank: 22, winRate: 68 },
+  const [showFindPlayers, setShowFindPlayers] = useState(false);
+  
+  const recentSearches = ["Sarah Johnson", "City Championship", "Tennis Players", "Badminton Courts"];
+  
+  const goToOptions = [
+    { 
+      icon: MapPin, 
+      label: "Matches Near Me", 
+      onClick: () => console.log("Navigate to nearby matches") 
+    },
+    { 
+      icon: Trophy, 
+      label: "Tournaments Near Me", 
+      onClick: () => console.log("Navigate to nearby tournaments") 
+    },
+    { 
+      icon: Users, 
+      label: "Find Players", 
+      onClick: () => setShowFindPlayers(true)
+    },
+    { 
+      icon: Target, 
+      label: "Challenges", 
+      onClick: () => console.log("Navigate to challenges") 
+    },
   ];
 
-  const mockMatches = [
-    { id: 1, player1: "Alice", player2: "Bob", sport: "Badminton", date: "2025-10-15", time: "6:00 PM" },
-    { id: 2, player1: "Charlie", player2: "David", sport: "Tennis", date: "2025-10-16", time: "5:30 PM" },
-  ];
-
-  const mockTournaments = [
-    { id: 1, name: "City Championship", sport: "Badminton", location: "Sports Complex A", date: "2025-11-01" },
-    { id: 2, name: "Weekend League", sport: "Tennis", location: "Tennis Courts", date: "2025-11-05" },
-  ];
-
-  const mockOrganizations = [
-    { id: 1, name: "Raipur Sports Club", type: "Club", sports: ["Badminton", "Tennis"], members: 150 },
-    { id: 2, name: "City Academy", type: "Academy", sports: ["Basketball", "Tennis"], members: 200 },
-  ];
+  if (showFindPlayers) {
+    return <PlayersScreen onBack={() => setShowFindPlayers(false)} />;
+  }
 
   return (
     <MobileContainer className="pb-24">
-      {/* Header */}
-      <div className="p-6 bg-gradient-to-r from-card to-card-elevated">
-        <div className="flex items-center space-x-3 mb-4">
-          <Button variant="ghost" size="icon" onClick={onBack}>
+      {/* Header with Search Bar */}
+      <div className="p-4 bg-gradient-to-r from-card to-card-elevated">
+        <div className="flex items-center space-x-3">
+          <Button variant="ghost" size="icon" onClick={onBack} className="flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-xl font-bold">Search</h1>
-        </div>
-        
-        {/* Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
+          
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary" />
+            <Input
+              placeholder={userType === 'individual' ? "Search players, matches..." : "Search tournaments, organizations..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-20 border-none focus-visible:ring-1"
+              autoFocus
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-3">
+              <QrCode className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-primary transition-colors" />
+              <Mic className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-primary transition-colors" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Recent Section */}
       <div className="px-6 py-4">
-        {userType === 'individual' ? (
-          <Tabs defaultValue="players" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="players">Players</TabsTrigger>
-              <TabsTrigger value="matches">Matches</TabsTrigger>
-              <TabsTrigger value="tournaments">Tournaments</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="players" className="space-y-3 mt-4">
-              {mockPlayers.map((player) => (
-                <Card key={player.id} className="p-4 bg-gradient-card">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center">
-                        <span className="text-lg font-bold">{player.name[0]}</span>
-                      </div>
-                      <div>
-                        <p className="font-semibold">{player.name}</p>
-                        <p className="text-sm text-muted-foreground">{player.sport}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant="outline">Rank #{player.rank}</Badge>
-                      <p className="text-sm text-muted-foreground mt-1">{player.winRate}% wins</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            <Clock className="w-5 h-5 text-foreground" />
+            <h2 className="text-xl font-bold">Recent</h2>
+          </div>
+          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+            Clear
+          </Button>
+        </div>
+        
+        <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
+          {recentSearches.map((search, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              size="sm"
+              className="flex-shrink-0 rounded-full bg-card hover:bg-accent/10"
+            >
+              {search}
+            </Button>
+          ))}
+        </div>
+      </div>
 
-            <TabsContent value="matches" className="space-y-3 mt-4">
-              {mockMatches.map((match) => (
-                <Card key={match.id} className="p-4 bg-gradient-card">
-                  <div className="space-y-2">
-                    <p className="font-semibold">{match.player1} vs {match.player2}</p>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <Trophy className="w-4 h-4" />
-                        <span>{match.sport}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{match.date} • {match.time}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="tournaments" className="space-y-3 mt-4">
-              {mockTournaments.map((tournament) => (
-                <Card key={tournament.id} className="p-4 bg-gradient-card">
-                  <div className="space-y-2">
-                    <p className="font-semibold">{tournament.name}</p>
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <Trophy className="w-4 h-4" />
-                      <span>{tournament.sport}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{tournament.location}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{tournament.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
-          </Tabs>
-        ) : (
-          <Tabs defaultValue="tournaments" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="tournaments">Tournaments</TabsTrigger>
-              <TabsTrigger value="organizations">Organizations</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="tournaments" className="space-y-3 mt-4">
-              {mockTournaments.map((tournament) => (
-                <Card key={tournament.id} className="p-4 bg-gradient-card">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="font-semibold">{tournament.name}</p>
-                      <Badge>Join</Badge>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                      <Trophy className="w-4 h-4" />
-                      <span>{tournament.sport}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{tournament.location}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>{tournament.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="organizations" className="space-y-3 mt-4">
-              {mockOrganizations.map((org) => (
-                <Card key={org.id} className="p-4 bg-gradient-card">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center">
-                        <Building2 className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="font-semibold">{org.name}</p>
-                        <p className="text-sm text-muted-foreground">{org.type}</p>
-                        <p className="text-xs text-muted-foreground">{org.sports.join(", ")}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center space-x-1 text-sm">
-                        <Users className="w-4 h-4" />
-                        <span>{org.members}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </TabsContent>
-          </Tabs>
-        )}
+      {/* Go To Section */}
+      <div className="px-6 py-4">
+        <h2 className="text-xl font-bold mb-4">Go To</h2>
+        
+        <div className="space-y-2">
+          {goToOptions.map((option, index) => (
+            <button
+              key={index}
+              onClick={option.onClick}
+              className="w-full flex items-center justify-between p-4 bg-card hover:bg-accent/5 rounded-lg transition-colors group"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 flex items-center justify-center bg-muted/50 rounded-lg group-hover:bg-primary/10 transition-colors">
+                  <option.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <span className="text-base font-medium">{option.label}</span>
+              </div>
+              <ArrowLeft className="w-5 h-5 text-muted-foreground rotate-180" />
+            </button>
+          ))}
+        </div>
       </div>
     </MobileContainer>
   );

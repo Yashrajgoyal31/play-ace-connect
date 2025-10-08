@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Play, Trophy, Plus, Target, Medal, Calendar, MapPin, Search } from "lucide-react";
+import { Play, Trophy, Plus, Target, Medal, Calendar, MapPin, Search, QrCode, Mic } from "lucide-react";
 import { useState } from "react";
 
 interface IndividualDashboardProps {
@@ -17,6 +17,7 @@ interface IndividualDashboardProps {
   onViewProfile: () => void;
   onViewTournaments?: () => void;
   onViewLeaderboard?: () => void;
+  onSearch?: () => void;
 }
 
 export const IndividualDashboard = ({ 
@@ -24,7 +25,8 @@ export const IndividualDashboard = ({
   onFindPlayers, 
   onViewProfile, 
   onViewTournaments,
-  onViewLeaderboard 
+  onViewLeaderboard,
+  onSearch 
 }: IndividualDashboardProps) => {
   const [showAddSportDialog, setShowAddSportDialog] = useState(false);
   const [activeSports, setActiveSports] = useState(['badminton', 'tennis', 'basketball', 'table-tennis']);
@@ -51,8 +53,8 @@ export const IndividualDashboard = ({
   return (
     <MobileContainer className="pb-24">
       {/* Header */}
-      <div className="p-6 bg-gradient-to-r from-card to-card-elevated">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-6 bg-gradient-to-r from-card to-card-elevated space-y-4">
+        <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div 
               className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
@@ -65,7 +67,23 @@ export const IndividualDashboard = ({
               <p className="text-sm text-muted-foreground">Let's score! 🏆</p>
             </div>
           </div>
-          
+        </div>
+        
+        {/* Search Bar */}
+        <div 
+          className="relative cursor-pointer" 
+          onClick={onSearch}
+        >
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Search players, matches, tournaments..."
+            className="pl-10 pr-20 cursor-pointer"
+            readOnly
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+            <QrCode className="w-4 h-4 text-muted-foreground" />
+            <Mic className="w-4 h-4 text-muted-foreground" />
+          </div>
         </div>
         
         {/* Your Sports - Moved here */}

@@ -4,44 +4,66 @@ import { MobileContainer } from "@/components/ui/mobile-container";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BottomNavigation } from "@/components/ui/bottom-navigation";
-import { Play, Trophy, Plus, Calendar, Users, Target, Clock, Building2 } from "lucide-react";
+import { Play, Trophy, Plus, Calendar, Users, Target, Clock, Building2, Search, QrCode, Mic } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface OrganizationDashboardProps {
   onStartMatch: () => void;
   onViewProfile: () => void;
   onViewTournaments?: () => void;
   organizerProfile?: any;
+  onSearch?: () => void;
 }
 
 export const OrganizationDashboard = ({ 
   onStartMatch, 
   onViewProfile, 
   onViewTournaments,
-  organizerProfile 
+  organizerProfile,
+  onSearch 
 }: OrganizationDashboardProps) => {
   const orgSports = organizerProfile?.sportsOffered || ['badminton', 'tennis', 'basketball', 'table-tennis'];
   
   return (
     <MobileContainer className="pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 bg-gradient-to-r from-card to-card-elevated">
-        <div className="flex items-center space-x-3">
-          <div 
-            className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-            onClick={onViewProfile}
-          >
-            <Building2 className="w-6 h-6 text-accent-foreground" />
+      <div className="p-6 bg-gradient-to-r from-card to-card-elevated space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div 
+              className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+              onClick={onViewProfile}
+            >
+              <Building2 className="w-6 h-6 text-accent-foreground" />
+            </div>
+            <div>
+              <h2 className="font-semibold">Let's score! 🏆</h2>
+              <p className="text-sm text-muted-foreground">{organizerProfile?.organizationName || 'Your Organization'}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-semibold">Let's score! 🏆</h2>
-            <p className="text-sm text-muted-foreground">{organizerProfile?.organizationName || 'Your Organization'}</p>
+          
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" onClick={onStartMatch}>
+              <Plus className="w-5 h-5 text-accent" />
+            </Button>
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="icon" onClick={onStartMatch}>
-            <Plus className="w-5 h-5 text-accent" />
-          </Button>
+        {/* Search Bar */}
+        <div 
+          className="relative cursor-pointer" 
+          onClick={onSearch}
+        >
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Search tournaments, organizations..."
+            className="pl-10 pr-20 cursor-pointer"
+            readOnly
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+            <QrCode className="w-4 h-4 text-muted-foreground" />
+            <Mic className="w-4 h-4 text-muted-foreground" />
+          </div>
         </div>
       </div>
 

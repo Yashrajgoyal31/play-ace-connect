@@ -99,6 +99,7 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
               onViewProfile={() => setCurrentState('organization-profile')}
               onViewTournaments={() => setCurrentState('tournaments')}
               organizerProfile={organizerProfile}
+              onSearch={() => setCurrentState('search')}
             />
             <BottomNavigation 
               userType={userType}
@@ -117,6 +118,7 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
               onViewProfile={() => setCurrentState('profile')}
               onViewTournaments={() => setCurrentState('tournaments')}
               onViewLeaderboard={() => setCurrentState('leaderboard')}
+              onSearch={() => setCurrentState('search')}
             />
             <BottomNavigation 
               userType={userType}
