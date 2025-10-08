@@ -16,6 +16,7 @@ interface IndividualProfileProps {
 
 export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps) => {
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -45,7 +46,7 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
   };
 
   const isFormValid = () => {
-    if (!fullName || !day || !month || !year || !gender || selectedSports.length === 0) {
+    if (!fullName || !phone || !day || !month || !year || !gender || selectedSports.length === 0) {
       return false;
     }
     
@@ -103,6 +104,20 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Enter your full name"
               />
+            </div>
+
+            <div>
+              <Label htmlFor="phone">Phone Number*</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 1234567890"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Include country code (e.g., +91 for India)
+              </p>
             </div>
 
             <div>
@@ -242,7 +257,8 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
           onClick={() => {
             const dateOfBirth = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
             onComplete({ 
-              fullName, 
+              fullName,
+              phone,
               dateOfBirth, 
               gender, 
               primarySports: selectedSports 
