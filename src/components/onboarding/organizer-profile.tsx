@@ -518,6 +518,21 @@ export const OrganizerProfile = ({ organizationType, onBack, onComplete }: Organ
           >
             Complete Profile Setup
           </Button>
+          {/* Temporary Quick Login */}
+          <Button 
+            variant="outline" 
+            className="w-full mt-2"
+            onClick={() => onComplete({
+              ...profileData,
+              organizationName: profileData.organizationName || 'Demo Organization',
+              contactPerson: profileData.contactPerson || 'Admin',
+              email: profileData.email || 'admin@example.com',
+              phone: profileData.phone || '+919999999999',
+              sportsOffered: profileData.sportsOffered.length ? profileData.sportsOffered : ['badminton','tennis']
+            })}
+          >
+            Quick Login (Temp)
+          </Button>
         </div>
       </div>
     </MobileContainer>

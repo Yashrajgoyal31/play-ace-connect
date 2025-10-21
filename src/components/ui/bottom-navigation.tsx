@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Trophy, TrendingUp, MapPin, Users, Target, Home } from "lucide-react";
+import { Trophy, TrendingUp, MapPin, Users, Target, Home, Gift } from "lucide-react";
 
 interface BottomNavigationProps {
   userType: 'organization' | 'individual';
-  currentSection?: 'home' | 'tournaments' | 'rankings' | 'players' | 'stats';
+  currentSection?: 'home' | 'tournaments' | 'rankings' | 'players' | 'teams' | 'rewards';
   onNavigateHome: () => void;
   onNavigateTournaments: () => void;
   onNavigateRankings?: () => void;
   onNavigatePlayers?: () => void;
-  onNavigateStats?: () => void;
+  onNavigateTeams?: () => void;
+  onNavigateRewards?: () => void;
 }
 
 export const BottomNavigation = ({
@@ -18,7 +19,8 @@ export const BottomNavigation = ({
   onNavigateTournaments,
   onNavigateRankings,
   onNavigatePlayers,
-  onNavigateStats
+  onNavigateTeams,
+  onNavigateRewards
 }: BottomNavigationProps) => {
   const isActive = (section: string) => currentSection === section;
 
@@ -64,11 +66,11 @@ export const BottomNavigation = ({
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`flex-col space-y-1 ${isActive('players') ? 'text-accent' : ''}`}
-              onClick={onNavigatePlayers}
+              className={`flex-col space-y-1 ${isActive('rewards') ? 'text-accent' : ''}`}
+              onClick={onNavigateRewards}
             >
-              <Users className={`w-5 h-5 ${isActive('players') ? 'text-accent' : ''}`} />
-              <span className="text-xs">Find Players</span>
+              <Gift className={`w-5 h-5 ${isActive('rewards') ? 'text-accent' : ''}`} />
+              <span className="text-xs">Rewards</span>
             </Button>
           </>
         ) : (
@@ -86,11 +88,11 @@ export const BottomNavigation = ({
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`flex-col space-y-1 ${isActive('stats') ? 'text-accent' : ''}`}
-              onClick={onNavigateStats}
+              className={`flex-col space-y-1 ${isActive('teams') ? 'text-accent' : ''}`}
+              onClick={onNavigateTeams}
             >
-              <Target className={`w-5 h-5 ${isActive('stats') ? 'text-accent' : ''}`} />
-              <span className="text-xs">Stats</span>
+              <Users className={`w-5 h-5 ${isActive('teams') ? 'text-accent' : ''}`} />
+              <span className="text-xs">Teams</span>
             </Button>
           </>
         )}

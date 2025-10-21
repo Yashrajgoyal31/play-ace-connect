@@ -6,9 +6,10 @@ interface SportIconProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   style?: CSSProperties;
+  onClick?: () => void;
 }
 
-export const SportIcon = ({ sport, className, size = 'md', style }: SportIconProps) => {
+export const SportIcon = ({ sport, className, size = 'md', style, onClick }: SportIconProps) => {
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',
@@ -32,10 +33,12 @@ export const SportIcon = ({ sport, className, size = 'md', style }: SportIconPro
         "flex items-center justify-center",
         "shadow-neomorph text-2xl",
         "transition-all duration-300 hover:scale-105",
+        onClick && "cursor-pointer active:scale-95",
         sizeClasses[size],
         className
       )}
       style={style}
+      onClick={onClick}
     >
       {iconEmojis[sport]}
     </div>

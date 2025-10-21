@@ -268,6 +268,24 @@ export const IndividualProfile = ({ onBack, onComplete }: IndividualProfileProps
         >
           Complete Setup
         </Button>
+
+        {/* Temporary Quick Login */}
+        <Button 
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            const today = new Date();
+            onComplete({ 
+              fullName: fullName || 'Demo User',
+              phone: phone || '+910000000000',
+              dateOfBirth: new Date(today.getFullYear()-18, 0, 1),
+              gender: gender || 'other',
+              primarySports: selectedSports.length ? selectedSports : ['Badminton']
+            });
+          }}
+        >
+          Quick Login (Temp)
+        </Button>
       </div>
     </MobileContainer>
   );

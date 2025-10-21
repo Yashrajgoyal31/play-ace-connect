@@ -8,11 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Play, Trophy, Plus, Target, Medal, Calendar, MapPin, Search, QrCode, Mic } from "lucide-react";
+import { Play, Trophy, Plus, Target, Medal, Calendar, MapPin, Search, QrCode, Mic, Coins } from "lucide-react";
+import { usePlayerPoints } from "@/hooks/use-player-points";
 import { useState } from "react";
 
 interface IndividualDashboardProps {
-  onStartMatch: () => void;
+  onStartMatch: (sport?: string) => void;
   onFindPlayers: () => void;
   onViewProfile: () => void;
   onViewTournaments?: () => void;
@@ -28,6 +29,7 @@ export const IndividualDashboard = ({
   onViewLeaderboard,
   onSearch 
 }: IndividualDashboardProps) => {
+  const { points } = usePlayerPoints();
   const [showAddSportDialog, setShowAddSportDialog] = useState(false);
   const [activeSports, setActiveSports] = useState(['badminton', 'tennis', 'basketball', 'table-tennis']);
   const [sportSearch, setSportSearch] = useState("");
@@ -62,9 +64,15 @@ export const IndividualDashboard = ({
             >
               <span className="text-xl font-bold text-accent-foreground">A</span>
             </div>
-            <div>
-              <h2 className="font-semibold text-lg">Alice Johnson</h2>
-              <p className="text-sm text-muted-foreground">Let's score! 🏆</p>
+            <div className="flex items-center">
+              <div>
+                <h2 className="font-semibold text-lg">Alice Johnson</h2>
+                <p className="text-sm text-muted-foreground">Let's score! 🏆</p>
+              </div>
+              <div className="ml-3 flex items-center space-x-1 bg-accent/10 px-2 py-1 rounded-md">
+                <Coins className="w-4 h-4 text-accent" />
+                <span className="text-xs font-medium text-accent">{(points || 0).toLocaleString()} pts</span>
+              </div>
             </div>
           </div>
         </div>
@@ -95,6 +103,11 @@ export const IndividualDashboard = ({
                   sport={sport as any} 
                   size="lg" 
                   className="cursor-pointer active:scale-95 transition-transform w-12 h-12" 
+                  onClick={() => {
+                    console.log('Sport icon clicked:', sport);
+                    // Pass the selected sport directly to match setup
+                    onStartMatch(sport);
+                  }}
                 />
               </div>
             ))}

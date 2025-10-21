@@ -74,6 +74,16 @@ export const WelcomeScreen = ({ onGetStarted, onOrganizationSetup }: WelcomeScre
           >
             Continue as Individual
           </Button>
+
+          {/* Temporary Quick Login Buttons */}
+          <div className="grid grid-cols-2 gap-2 pt-2">
+            <Button variant="secondary" className="w-full" onClick={onGetStarted}>
+              Quick Login (Individual)
+            </Button>
+            <Button variant="secondary" className="w-full" onClick={onOrganizationSetup}>
+              Quick Login (Org)
+            </Button>
+          </div>
           
           <p className="text-sm text-foreground/70 text-center">
             Join thousands of athletes improving their game

@@ -60,6 +60,22 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Points System (Supabase)
+
+A production-ready points and leaderboard schema is included.
+
+1. Run migrations: see `supabase/migrations/20251020000000_points_system.sql`.
+2. A trigger enqueues `matches` when status becomes `completed` into `match_event_queue`.
+3. A background worker (Edge Function/cron) should:
+   - Compute ELO per sport and update `sport_ratings`
+   - Award points to winners based on tournament weight and opponent strength
+   - Write `points_ledger` entries and increment `player_stats`
+4. Frontend:
+   - `src/hooks/use-player-points.ts` fetches player totals
+   - `src/components/leaderboard/leaderboard-screen.tsx` reads `leaderboard_view`
+
+Only tournament matches should contribute points; casual matches must be ignored or weighted 0 in the worker.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/a8af4a11-6eaf-4501-bf04-65c95435c055) and click on Share -> Publish.

@@ -4,18 +4,22 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SportIcon } from "@/components/ui/sport-icon";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon, Medal, TrendingUp, Building2 } from "lucide-react";
+import { ArrowLeft, Share, Edit, Trophy, Target, Zap, Sun, Moon, Medal, TrendingUp, Building2, Gift, Coins, QrCode } from "lucide-react";
 import { useState } from "react";
+import { usePlayerPoints } from "@/hooks/use-player-points";
 
 interface ProfileScreenProps {
   onBack: () => void;
-  onSwitchToOrganization?: (orgId: string) => void;
+  onSwitchToOrganization?: () => void;
+  onViewRewards?: () => void;
   userId?: string;
 }
 
-export const ProfileScreen = ({ onBack, onSwitchToOrganization, userId }: ProfileScreenProps) => {
+export const ProfileScreen = ({ onBack, onSwitchToOrganization, onViewRewards, userId }: ProfileScreenProps) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [selectedSport, setSelectedSport] = useState("badminton");
+  // Dynamic points pulled from Supabase
+  const { points } = usePlayerPoints(userId);
   
   const sportsStats = {
     badminton: { matches: 28, wins: 22, losses: 6, winRate: 79, points: 847 },
@@ -47,6 +51,17 @@ export const ProfileScreen = ({ onBack, onSwitchToOrganization, userId }: Profil
         </div>
       </div>
 
+      {/* Quick QR Connect */}
+      <div className="px-6 py-2">
+        <Card className="p-4 bg-gradient-card flex items-center justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground">Share your QR to connect</p>
+            <p className="text-xs text-muted-foreground">Scan to add or invite to team</p>
+          </div>
+          <QrCode className="w-10 h-10 text-accent" />
+        </Card>
+      </div>
+
       {/* Profile Header */}
       <div className="px-6 py-6">
         <Card className="p-6 bg-gradient-card text-center relative">
@@ -73,9 +88,30 @@ export const ProfileScreen = ({ onBack, onSwitchToOrganization, userId }: Profil
           </Card>
           
           {/* Switch Profile Option */}
-          <Button variant="outline" size="sm" className="w-full">
+          <Button variant="outline" size="sm" className="w-full" onClick={onSwitchToOrganization}>
             Switch to Organization Profile
           </Button>
+        </Card>
+      </div>
+
+      {/* Points & Rewards Section */}
+      <div className="px-6 py-4">
+        <Card className="p-4 bg-gradient-to-r from-accent/10 to-accent/5 border-accent/20 cursor-pointer hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent/10 transition-all" onClick={onViewRewards}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                <Coins className="w-6 h-6 text-accent" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-accent">{(points || 0).toLocaleString()} Points</h3>
+                <p className="text-sm text-muted-foreground">Redeem for rewards & discounts</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Gift className="w-5 h-5 text-accent" />
+              <span className="text-sm font-medium text-accent">View Rewards</span>
+            </div>
+          </div>
         </Card>
       </div>
 

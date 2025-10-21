@@ -428,51 +428,7 @@ export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchTo
         </div>
       </div>
 
-      {/* Tournaments */}
-      <div className="px-6 py-4">
-        <h3 className="text-lg font-semibold mb-4">Tournaments</h3>
-        
-        <Tabs defaultValue="created">
-          <TabsList className="grid w-full grid-cols-2 bg-gradient-card border border-accent/20">
-            <TabsTrigger value="created">Created</TabsTrigger>
-            <TabsTrigger value="all">All Tournaments</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="created" className="mt-4 space-y-3">
-            <Card className="p-4 bg-gradient-card">
-              <div className="flex items-center justify-between mb-2">
-                <Badge variant="outline" className="text-xs bg-success/20 text-success border-success/30">LIVE</Badge>
-                <p className="text-xs text-muted-foreground">2 days left</p>
-              </div>
-              <h4 className="font-semibold mb-1">Annual Badminton Championship</h4>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Users className="w-4 h-4" />
-                <span>64 participants</span>
-              </div>
-            </Card>
-            
-            <Card className="p-4 bg-gradient-card">
-              <div className="flex items-center justify-between mb-2">
-                <Badge variant="outline" className="text-xs">Upcoming</Badge>
-                <p className="text-xs text-muted-foreground">Starts in 5 days</p>
-              </div>
-              <h4 className="font-semibold mb-1">Tennis Open 2025</h4>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4" />
-                <span>Jan 15-17</span>
-              </div>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="all" className="mt-4 space-y-3">
-            <Card className="p-4 bg-gradient-card">
-              <h4 className="font-semibold mb-1">City Basketball League</h4>
-              <p className="text-xs text-muted-foreground mb-2">Other Organization</p>
-              <Badge variant="outline" className="text-xs">Registration Open</Badge>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+      {/* Tournaments section removed as per requirements */}
 
       {/* Teams */}
       <div className="px-6 py-4">
@@ -496,6 +452,11 @@ export const OrganizationProfileScreen = ({ onBack, organizerProfile, onSwitchTo
             </div>
           </Card>
         </div>
+      </div>
+
+      {/* Role badge */}
+      <div className="px-6">
+        <Badge variant="outline" className="text-xs bg-accent/10 text-accent border-accent/30">Admin View</Badge>
       </div>
 
       {/* Invite Member Dialog */}

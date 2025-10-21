@@ -77,7 +77,7 @@ export const OrganizationDashboard = ({
             onClick={onStartMatch}
           >
             <Play className="w-6 h-6 text-accent" />
-            <span className="text-sm font-medium">Start Match</span>
+            <span className="text-sm font-medium">Quick Match</span>
           </Button>
           
           <Button 
@@ -86,35 +86,12 @@ export const OrganizationDashboard = ({
             onClick={onViewTournaments}
           >
             <Trophy className="w-6 h-6 text-primary" />
-            <span className="text-sm font-medium">Tournaments</span>
+            <span className="text-sm font-medium">Start Tournament</span>
           </Button>
         </div>
       </div>
 
-      {/* Organization Sports */}
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Your Sports</h3>
-          <Button variant="ghost" size="sm" className="text-accent">
-            <Plus className="w-4 h-4 mr-1" />
-            Add Sport
-          </Button>
-        </div>
-        <div className="flex space-x-4 overflow-x-auto pb-2">
-          {orgSports.map((sport: string) => (
-            <div key={sport} className="flex-shrink-0">
-              <SportIcon 
-                sport={sport as any} 
-                size="lg" 
-                className="cursor-pointer active:scale-95 transition-transform" 
-              />
-              <p className="text-xs text-center mt-2 capitalize font-medium">
-                {sport.replace('-', ' ')}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Organization Sports removed as per requirements; Tournament Overview kept below */}
 
       {/* Live Tournaments */}
       <div className="px-6 py-4">
@@ -151,7 +128,7 @@ export const OrganizationDashboard = ({
       <div className="px-6 py-4">
         <h3 className="text-lg font-semibold mb-4">Tournament Overview</h3>
         <div className="grid grid-cols-3 gap-4">
-          <Card className="p-4 bg-gradient-card">
+          <Card className="p-4 bg-gradient-card cursor-pointer hover:bg-gradient-card/80 transition-colors" onClick={() => onViewTournaments?.()}>
             <div className="text-center">
               <Calendar className="w-6 h-6 text-primary mx-auto mb-2" />
               <p className="text-2xl font-bold">2</p>
@@ -159,7 +136,7 @@ export const OrganizationDashboard = ({
             </div>
           </Card>
           
-          <Card className="p-4 bg-gradient-accent/10 border border-accent/20">
+          <Card className="p-4 bg-gradient-accent/10 border border-accent/20 cursor-pointer hover:bg-gradient-accent/20 transition-colors" onClick={() => onViewTournaments?.()}>
             <div className="text-center">
               <Clock className="w-6 h-6 text-accent mx-auto mb-2" />
               <p className="text-2xl font-bold text-accent">1</p>
@@ -167,7 +144,7 @@ export const OrganizationDashboard = ({
             </div>
           </Card>
           
-          <Card className="p-4 bg-gradient-card">
+          <Card className="p-4 bg-gradient-card cursor-pointer hover:bg-gradient-card/80 transition-colors" onClick={() => onViewTournaments?.()}>
             <div className="text-center">
               <Trophy className="w-6 h-6 text-warning mx-auto mb-2" />
               <p className="text-2xl font-bold">8</p>
