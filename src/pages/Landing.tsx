@@ -33,11 +33,11 @@ export default function Landing() {
           </h1>
           
           <p className="text-2xl md:text-3xl font-bold text-primary mb-4">
-            Play More. Improve Faster.
+            Manage Tournaments for Free
           </p>
           
           <p className="text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto mb-12">
-            Connect with players, score matches live, and dominate your sport with intelligent insights and real-time analytics.
+            Find tournaments near you, score matches live, and track your pickle ball journey with real-time analytics.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -53,12 +53,14 @@ export default function Landing() {
             </Button>
           </div>
           
-          {/* Sport Icons */}
-          <div className="flex items-center justify-center space-x-6">
-            <SportIcon sport="badminton" size="lg" className="animate-bounce" style={{ animationDelay: '0ms' }} />
-            <SportIcon sport="tennis" size="lg" className="animate-bounce" style={{ animationDelay: '200ms' }} />
-            <SportIcon sport="basketball" size="lg" className="animate-bounce" style={{ animationDelay: '400ms' }} />
-            <SportIcon sport="table-tennis" size="lg" className="animate-bounce" style={{ animationDelay: '600ms' }} />
+          {/* Available as PWA Badge */}
+          <div className="flex items-center justify-center">
+            <div className="bg-accent/20 backdrop-blur-sm px-6 py-3 rounded-full border border-accent/30">
+              <p className="text-sm font-semibold text-accent flex items-center gap-2">
+                <Smartphone className="w-4 h-4" />
+                Available as Progressive Web App
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -76,21 +78,21 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="p-8 hover:shadow-glow-primary transition-all">
               <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 text-primary" />
+                <Trophy className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Connect with Players</h3>
+              <h3 className="text-2xl font-bold mb-4">Find Tournaments Near You</h3>
               <p className="text-muted-foreground">
-                Find and connect with players in your area. Build your network, schedule matches, and grow your sports community.
+                Discover pickle ball tournaments happening in your area. Browse events, check schedules, and join the competition.
               </p>
             </Card>
             
             <Card className="p-8 hover:shadow-glow-accent transition-all">
               <div className="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <Trophy className="w-8 h-8 text-accent" />
+                <Star className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-2xl font-bold mb-4">Live Match Scoring</h3>
               <p className="text-muted-foreground">
-                Score matches in real-time with sport-specific scoring systems. Track every point, set, and game with precision.
+                Score matches in real-time with pickle ball-specific scoring system. Track every point, game, and match with precision.
               </p>
             </Card>
             
@@ -111,29 +113,26 @@ export default function Landing() {
       <section className="py-24">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Multiple Sports. One Platform.
+            Starting with Pickle Ball
           </h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">
-            Currently supporting your favorite sports with more coming soon
+            More sports coming soon to the platform
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <Card className="p-8 text-center hover:scale-105 transition-transform">
-              <SportIcon sport="badminton" size="xl" className="mx-auto mb-4" />
-              <p className="font-semibold capitalize">Badminton</p>
+          <div className="flex justify-center">
+            <Card className="p-12 text-center hover:scale-105 transition-transform max-w-xs">
+              <div className="bg-gradient-primary rounded-full p-8 mx-auto mb-6 w-32 h-32 flex items-center justify-center">
+                <Trophy className="w-16 h-16 text-primary-foreground" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Pickle Ball</h3>
+              <p className="text-muted-foreground">Available Now</p>
             </Card>
-            <Card className="p-8 text-center hover:scale-105 transition-transform">
-              <SportIcon sport="tennis" size="xl" className="mx-auto mb-4" />
-              <p className="font-semibold capitalize">Tennis</p>
-            </Card>
-            <Card className="p-8 text-center hover:scale-105 transition-transform">
-              <SportIcon sport="basketball" size="xl" className="mx-auto mb-4" />
-              <p className="font-semibold capitalize">Basketball</p>
-            </Card>
-            <Card className="p-8 text-center hover:scale-105 transition-transform">
-              <SportIcon sport="table-tennis" size="xl" className="mx-auto mb-4" />
-              <p className="font-semibold capitalize">Table Tennis</p>
-            </Card>
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground">
+              Future sports including Badminton, Tennis, Basketball, and Table Tennis will be added soon
+            </p>
           </div>
         </div>
       </section>
@@ -142,34 +141,34 @@ export default function Landing() {
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Built for Organizations Too
+            Free for Organizations
           </h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">
-            Manage tournaments, teams, and players with ease
+            Create your profile and manage tournaments at no cost
           </p>
           
           <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
             <div>
               <div className="flex items-center gap-4 mb-6">
                 <div className="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center">
-                  <Trophy className="w-6 h-6 text-accent" />
+                  <Users className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="text-xl font-bold">Tournament Management</h3>
+                <h3 className="text-xl font-bold">Create Your Profile</h3>
               </div>
               <p className="text-muted-foreground pl-16">
-                Create, organize, and manage tournaments with automatic scheduling, brackets, and live scoring.
+                Build your organization's profile with details, logo, and contact information. Get discovered by players.
               </p>
             </div>
             
             <div>
               <div className="flex items-center gap-4 mb-6">
                 <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-primary" />
+                  <Trophy className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold">Team Management</h3>
+                <h3 className="text-xl font-bold">Free Tournament Management</h3>
               </div>
               <p className="text-muted-foreground pl-16">
-                Organize players into teams, track performance, and manage rosters efficiently.
+                Create and manage tournaments at no cost. Organize events with automatic scheduling and live scoring.
               </p>
             </div>
             
@@ -181,7 +180,7 @@ export default function Landing() {
                 <h3 className="text-xl font-bold">Analytics Dashboard</h3>
               </div>
               <p className="text-muted-foreground pl-16">
-                Get insights into player performance, tournament statistics, and organizational growth.
+                Get insights into tournament performance, player statistics, and organizational growth metrics.
               </p>
             </div>
             
@@ -193,7 +192,7 @@ export default function Landing() {
                 <h3 className="text-xl font-bold">Rankings & Leaderboards</h3>
               </div>
               <p className="text-muted-foreground pl-16">
-                Automatic ranking systems with customizable leaderboards for your organization.
+                Automatic ranking systems with customizable leaderboards for your tournaments and players.
               </p>
             </div>
           </div>
@@ -204,31 +203,51 @@ export default function Landing() {
       <section className="py-24">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Get Started Today
+            Install as Progressive Web App
           </h2>
-          <p className="text-muted-foreground mb-12 text-lg">
-            Available on web and mobile platforms
+          <p className="text-muted-foreground mb-8 text-lg">
+            Works like a native app on any device
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" variant="outline" className="text-lg">
-              <Apple className="mr-2 h-6 w-6" />
-              Download for iOS
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg">
-              <Smartphone className="mr-2 h-6 w-6" />
-              Download for Android
-            </Button>
-            <Link to="/">
-              <Button size="lg" variant="hero" className="text-lg shadow-glow-primary">
-                <Chrome className="mr-2 h-6 w-6" />
-                Open Web App
-              </Button>
-            </Link>
+          <div className="max-w-3xl mx-auto mb-12">
+            <Card className="p-8 bg-muted/30">
+              <div className="flex items-start gap-4 text-left">
+                <div className="bg-primary/10 p-3 rounded-full">
+                  <Smartphone className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Install to Your Home Screen</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Visit our web app on your mobile browser and tap "Add to Home Screen" or "Install" to get the full app experience.
+                  </p>
+                  <ul className="text-sm text-muted-foreground space-y-2">
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                      Works offline once installed
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                      Launches like a native app
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                      Available on iPhone and Android
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </Card>
           </div>
           
-          <p className="text-sm text-muted-foreground">
-            Join thousands of athletes improving their game
+          <Link to="/app">
+            <Button size="lg" variant="hero" className="text-lg shadow-glow-primary">
+              <Play className="mr-2 h-6 w-6" />
+              Open Web App
+            </Button>
+          </Link>
+          
+          <p className="text-sm text-muted-foreground mt-8">
+            Native iOS and Android apps coming soon
           </p>
         </div>
       </section>
