@@ -194,7 +194,7 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
               onNavigateHome={() => setCurrentState('home')}
               onNavigateTournaments={() => setCurrentState('tournaments')}
               onNavigateRankings={() => setCurrentState('leaderboard')}
-              onNavigateStats={() => setCurrentState('search')}
+              onNavigateRewards={() => setCurrentState('rewards')}
             />
           </>
         );
@@ -215,12 +215,11 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
             />
             <BottomNavigation 
               userType={userType}
-              currentSection={userType === 'organization' ? 'stats' : 'players'}
+              currentSection="home"
               onNavigateHome={() => setCurrentState('home')}
               onNavigateTournaments={() => setCurrentState('tournaments')}
               onNavigateRankings={() => setCurrentState('leaderboard')}
-              onNavigatePlayers={() => setCurrentState('search')}
-              onNavigateStats={() => setCurrentState('search')}
+              onNavigateRewards={() => setCurrentState('rewards')}
             />
           </>
         );
@@ -233,11 +232,11 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
             />
             <BottomNavigation 
               userType={userType}
-              currentSection="home"
+              currentSection="teams"
               onNavigateHome={() => setCurrentState('home')}
               onNavigateTournaments={() => setCurrentState('tournaments')}
               onNavigateRankings={() => setCurrentState('leaderboard')}
-              onNavigateStats={() => setCurrentState('search')}
+              onNavigateTeams={() => setCurrentState('teams')}
             />
           </>
         );
@@ -273,7 +272,7 @@ export const AppStateManager = ({ user, session }: AppStateManagerProps) => {
               onNavigateHome={() => setCurrentState('home')}
               onNavigateTournaments={() => setCurrentState('tournaments')}
               onNavigateRankings={() => setCurrentState('leaderboard')}
-              onNavigateStats={() => setCurrentState('search')}
+              onNavigateTeams={() => setCurrentState('teams')}
             />
           </>
         ) : (
